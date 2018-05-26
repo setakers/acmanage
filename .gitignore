@@ -1,2 +1,5 @@
+.vscode
+.idea
+public
 node_modules
 npm-debug.log
