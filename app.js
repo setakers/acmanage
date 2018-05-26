@@ -1,6 +1,6 @@
 const express   = require('express');
 const fs        = require('fs');
-const config    = require('./config');
+const config    = require('./config/config');
 const app       = express();
 
 // Requiring routers
@@ -28,7 +28,4 @@ app.use((req, res, next) => {
     next(createError(404));
 });
 
-
-const server = app.listen(config.port, () => {
-    console.log('Server running at ' + config.hostname + ':' + config.port);
-})
+module.exports = app;
