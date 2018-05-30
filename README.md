@@ -107,21 +107,13 @@ npm install
 npm start
 ```
 
-成功之后试着在浏览器里面输入：
-
-```
-http://localhost:8888/api/hello
-```
-
-就可以看到服务器返回的`Hello world!`信息，说明你的服务器成功跑了起来。
-
 如果需要测试前端页面，你需要先在另一个终端让前端的静态页面泡在`localhost:8080`，然后执行：
 
 ```
 npm run proxy
 ```
 
-这个命令可以反向代理`/api/`路径下的内容到`8889`端口下的服务，其他内容仍然会路由到`8080`端口下的前端内容服务。最终用户访问的端口是`8080`。
+这个命令可以代理`/api/`路径下的内容到`8889`端口下的服务，其他内容仍然会路由到`8080`端口下的前端内容服务。最终用户访问的端口是`8888`。
 
 ## 配置项目
 
@@ -130,19 +122,27 @@ npm run proxy
 ```javascript
 // Server configurations
 module.exports = {
-    accessPort      : 8888,
-    portWhenProxy   : 8889,
-    frontendPort    : 8080,
-    hostname        : 'localhost',
-    getStaticPath   : path => ('' + path).replace('//', '/'),
-    apiPathPattern  : /\/api/,
-    getApiPath      : path => ('/api/' + path).replace('//', '/'),
+    accessPort          : 8888,
+    portWhenProxy       : 8889,
+    frontendPort        : 8080,
+    hostname            : 'localhost',
+    // Session time limit in seconds
+    sessionTimeLimit    : 30,
+    // Key for encrypting app token
+    accessKey           : 'SEtakers2018AccessKey',
+    getStaticPath       : path => ('/#/' + path).replace('//', '/'),
+    apiPathPattern      : /\/api/,
+    getApiPath          : path => ('/api/' + path).replace('//', '/'),
 };
 ```
 
 这里面`accessPort`是用户访问的端口；`portWhenProxy`是当代理模式（即前后端同时跑）的时候，API服务（即后端，即该项目）运行端口；`frontendPort`是假设前端跑在的端口。
 
 `hostname`是主机名，`getStaticPath`是将一个相对路径变换到静态资源路径的函数，服务器可以自己在`public`目录下放一些想要放的静态资源，可以直接被访问到（通过`app.js`中的`app.use(config.getStaticPath(''), express.static('public'));`实现）。
+
+`sessionTimeLimit`是登录超时时间，access token签字时间过后，经过该超时时间，token就会失效，需要重新登录。
+
+`accessKey`是用来加密access token的密钥，保存在服务器端，客户端无需知道这一密钥。
 
 例如，我可以在`public`目录下放一个文件`hello.txt`，在`getStaticPath`配置为`path => ('' + path).replace('//', '/')`时，我可以通过：
 
@@ -169,9 +169,13 @@ http://localhost:8888/foo/hello.txt
 ## 项目结构
 
 * `config` 配置脚本
+* `dataModels` 数据模型，后面实现数据库的时候，相关驱动放在这里
+    * 如果是MySQL，麻烦一点，需要自己把记录转成相应格式的JSON
+    * MongoDB的形式要方便一些，可以直接存取结构化数据
+* `modules` 模块，包含逻辑部分，介于`routes`和`dataModels`之间的东西往这里放
 * `node_modules` node模块依赖
 * `public` 静态资源
-* `routes` 路由，即后端API的URL入口设计
+* `routes` 路由，将URL映射到后端的功能模块
 * `.gitignore` git忽略配置，这里面写的文件将会被git忽略
 * `app.js` 服务器程序代码
 * `package.json` 项目配置，需要安装新的库可以直接在这里的依赖里面写新项，然后跑一下`npm install`就可以了
