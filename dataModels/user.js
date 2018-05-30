@@ -14,11 +14,11 @@ var fakeData = {
     },
     '23456789': {
         password: 'test234566789',
-        role: ['admin', 'instructor']
+        role: ['admin', 'lecturer']
     },
     '98765432': {
         password: 'test98765432',
-        role: ['instructor']
+        role: ['lecturer']
     }
 };
 
