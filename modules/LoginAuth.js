@@ -63,5 +63,13 @@ LoginAuth.getRoles = (token) => {
         return [];
     }
 }
+LoginAuth.getUsername = (token) => {
+    try {
+        var decoded = JSON.parse(jwt.verify(token, config.accessKey));
+        return decoded.username;
+    } catch(e) {
+        return '';
+    }
+}
 
 module.exports = LoginAuth;

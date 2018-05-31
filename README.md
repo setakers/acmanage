@@ -9,9 +9,19 @@ $ sudo apt install npm
 
 会分别安装Node.js和npm（Node包管理器）。
 
+项目需要Webpack dev server，安装：
+
+```
+$ sudo npm install -g webpack
+$ sudo npm install -g webpack-cli
+$ sudo npm install -g webpack-dev-server
+```
+
 开发环境：
 
 Visual Studio Code编辑器，或JetBrains WebStorm IDE。
+
+## 关于JS的杂谈
 
 如果你没有接触过JavaScript，特别是ES6，可能需要知道以下几点要注意的地方（坑）：
 
@@ -98,19 +108,33 @@ a(true);
 项目初始化需要安装依赖，只需要在项目根目录下执行：
 
 ```
-npm install
+$ npm install
 ```
 
 ## 运行项目
 
-```
-npm start
-```
+### 只运行后端
 
-如果需要测试前端页面，你需要先在另一个终端让前端的静态页面泡在`localhost:8080`，然后执行：
+你可以选择只运行后端，这时候可以用Postman做API测试：
 
 ```
-npm run proxy
+$ npm start
+```
+
+### 运行整个项目
+
+如果需要测试前端页面，你需要先在另一个终端让前端的静态页面跑在`localhost:8080`，对这个项目来说，即在前端目录`acmanager-vue`下执行：
+
+```
+$ cd ../acmanager-vue
+$ npm install            # 如果前端目录下已经跑过这句话，就可以不用跑了
+$ npm run dev
+```
+
+然后切换回后端目录执行：
+
+```
+$ npm run proxy
 ```
 
 这个命令可以代理`/api/`路径下的内容到`8889`端口下的服务，其他内容仍然会路由到`8080`端口下的前端内容服务。最终用户访问的端口是`8888`。
@@ -172,12 +196,15 @@ http://localhost:8888/foo/hello.txt
 * `dataModels` 数据模型，后面实现数据库的时候，相关驱动放在这里
     * 如果是MySQL，麻烦一点，需要自己把记录转成相应格式的JSON
     * MongoDB的形式要方便一些，可以直接存取结构化数据
-* `modules` 模块，包含逻辑部分，介于`routes`和`dataModels`之间的东西往这里放
+
+    `dataModels`里面要做到正确访问数据库，做相应的抽象，允许外界可以通过方法调用将数据库查询结果以JSON的格式拿到用于处理
+
+* `modules` 模块，包含逻辑部分，介于`routes`和`dataModels`之间的东西往这里放，处理主要的逻辑
 * `node_modules` node模块依赖
 * `public` 静态资源
-* `routes` 路由，将URL映射到后端的功能模块
+* `routes` 路由，处理请求和响应
 * `.gitignore` git忽略配置，这里面写的文件将会被git忽略
-* `app.js` 服务器程序代码
+* `app.js` 服务器程序代码，按URL分流，把访问分流到`routes`中的模块做处理
 * `package.json` 项目配置，需要安装新的库可以直接在这里的依赖里面写新项，然后跑一下`npm install`就可以了
 
 目前只有一个用于测试的路由，还没有加入后端逻辑的模型。
