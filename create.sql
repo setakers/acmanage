@@ -3,8 +3,8 @@ USE setakers;
 CREATE TABLE IF NOT EXISTS `user`(
     `user_id` BIGINT PRIMARY KEY,
     `user_name` VARCHAR(20),
-    `password` VARCHAR(448),
-    `character` TINYINT,
+    `password` CHAR(41), # 插入和查询的时候密码使用PASSWORD（）函数处理，定长41位，该函数在高于mysql5.7以上版本无效
+    `character` TINYINT, # 0——学生， 1——教师， 2——管理员
     `gender` TINYINT,
     `email` VARCHAR(40) UNIQUE KEY,
     `phone` VARCHAR(20) UNIQUE KEY
@@ -99,3 +99,38 @@ CREATE TABLE IF NOT EXISTS `course_time`(
     FOREIGN KEY(time_slot_id) REFERENCES time_slot(time_slot_id),
     CONSTRAINT pk_course_time PRIMARY KEY(course_id, time_slot_id)
 );
+
+# following added by st4rlight
+# 成绩修改申请，由教师发起请求，由管理员审批
+CREATE TABLE IF NOT EXISTS `score_query`(
+  query_id BIGINT AUTO_INCREMENT PRIMARY KEY,
+  teacher_id BIGINT,
+  student_id BIGINT,
+  course_id BIGINT,
+  old_score INT,
+  new_score INT,
+  reason VARCHAR(400),
+  state tinyint, # 0--refused  1--accepted  2--pending
+  query_time TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  deal_time TIMESTAMP,
+  FOREIGN KEY (teacher_id) REFERENCES teacher(teacher_id),
+  FOREIGN KEY (student_id) REFERENCES student(student_id),
+  FOREIGN KEY (course_id) REFERENCES course(course_id)
+)ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1;
+
+
+CREATE TABLE IF NOT EXISTS `classroom`(
+  classroom_id BIGINT AUTO_INCREMENT PRIMARY KEY,
+  room_name VARCHAR(80) UNIQUE,
+  capacity INT
+)ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1;
+
+
+CREATE TABLE IF NOT EXISTS `exam`(
+  exam_id BIGINT AUTO_INCREMENT PRIMARY KEY,
+  course_id BIGINT,
+  classroom_id BIGINT,
+  time timestamp,
+  FOREIGN KEY (course_id) REFERENCES course(course_id),
+  FOREIGN KEY (classroom_id) REFERENCES classroom(classroom_id)
+)ENGINE=InnoDB AUTO_INCREMENT=1;
