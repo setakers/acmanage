@@ -1,33 +1,47 @@
-const express       = require('express');
-const config        = require('../config/config');
-const LoginAuth     = require('../modules/LoginAuth');
-const router        = express.Router();
+const express = require('express');
+const config = require('../config/config');
+const LoginAuth = require('../modules/LoginAuth');
+const router = express.Router();
 
-router.post('/userinfo', (req, res) => {
+router.post('/userinfo', (req, resp) => {
     var loginAuth = new LoginAuth(req.body.userinfo);
-    if(!loginAuth.isAuthorized) res.sendStatus(204);
-    else {
-        var responseJSON = JSON.stringify({
-            accessToken:    loginAuth.getAccessToken(),
-            roles:          loginAuth.getUserRoles(),
-        });
-        res .header('Content-Type', 'application/json')
-            .status(200)
-            .send(responseJSON);
-    }
+    loginAuth.isAuthorized(function (msg) {
+        if (msg.err) {
+            resp.sendStatus(204);
+        } else {
+            var res = {'accessToken': null, 'roles': null};
+            loginAuth.getAccessToken(function (str) {
+                res.accessToken = str;
+                loginAuth.getUserRoles(function (str1) {
+                    res.roles = str1;
+                    var responseJSON = JSON.stringify(res);
+                    resp.header('Content-Type', 'application/json')
+                        .status(200)
+                        .send(responseJSON);
+                });
+            });
+
+        }
+    })
 });
 
 router.get('/auth', (req, res) => {
-    var verified = LoginAuth.isVerifiedAccessToken(req.headers['authorization']);
-    if(verified) res.sendStatus(200);
-    else res.sendStatus(204);
+    LoginAuth.isVerifiedAccessToken(req.headers['authorization'], function (msg) {
+        if (!msg.err) res.sendStatus(200);
+        else res.sendStatus(204);
+    })
 });
 
 // This stuff checks if username is valid
-router.get('/userquery/:username', (req, res) => {
+router.get('/userquery/:username', (req, resp) => {
     var username = req.params['username'];
-    if(LoginAuth.isUser(username)) res.sendStatus(200);
-    else res.sendStatus(204);
+    LoginAuth.isUser(username, function (msg) {
+        if (!msg.err) {
+            resp.sendStatus(200);
+        } else {
+            resp.sendStatus(204);
+        }
+    })
 });
 
 module.exports = router;

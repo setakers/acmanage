@@ -1,7 +1,7 @@
 CREATE DATABASE IF NOT EXISTS setakers;
 USE setakers;
 CREATE TABLE IF NOT EXISTS `user`(
-    `user_id` BIGINT PRIMARY KEY,
+    `user_id` BIGINT PRIMARY KEY auto_increment,
     `user_name` VARCHAR(20),
     `password` CHAR(41), # 插入和查询的时候密码使用PASSWORD（）函数处理，定长41位，该函数在高于mysql5.7以上版本无效
     `character` TINYINT, # 0——学生， 1——教师， 2——管理员
@@ -11,17 +11,17 @@ CREATE TABLE IF NOT EXISTS `user`(
 );
 
 CREATE TABLE IF NOT EXISTS `student`(
-    `student_id` BIGINT PRIMARY KEY,
+    `student_id` BIGINT PRIMARY KEY auto_increment,
     `class` VARCHAR(80),
     `admission_date` DATE
 );
 
 CREATE TABLE IF NOT EXISTS `teacher`(
-    `teacher_id` BIGINT PRIMARY KEY
+    `teacher_id` BIGINT PRIMARY KEY auto_increment
 );
 
 CREATE TABLE IF NOT EXISTS `course`(
-    `course_id` BIGINT PRIMARY KEY,
+    `course_id` BIGINT PRIMARY KEY auto_increment,
     `course_name` VARCHAR(40),
     `credit` FLOAT,
     `introduction` VARCHAR(200),
@@ -29,17 +29,17 @@ CREATE TABLE IF NOT EXISTS `course`(
 );
 
 CREATE TABLE IF NOT EXISTS `major`(
-    `major_id` BIGINT PRIMARY KEY,
+    `major_id` BIGINT PRIMARY KEY auto_increment,
     `major_name` VARCHAR(80)
 );
 
 CREATE TABLE IF NOT EXISTS `college`(
-    `college_id` BIGINT PRIMARY KEY,
+    `college_id` BIGINT PRIMARY KEY auto_increment,
     `college_name` VARCHAR(80)
 );
 
 CREATE TABLE IF NOT EXISTS `time_slot`(
-    `time_slot_id` BIGINT PRIMARY KEY,
+    `time_slot_id` BIGINT PRIMARY KEY auto_increment,
     `date` DATE,
     `begin_time` TIME,
     `end_time` TIME
