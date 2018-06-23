@@ -10,7 +10,7 @@ var ExamDao = function () {
             }
         })
     }
-    this.getExamsByCourseId=function(course_id,callback){
+    this.getExamsByCourseId=function(conn,course_id,callback){
         conn.query('SELECT * from exam where course_id = ' + course_id, function (err, results, fields) {
             if (err) {
                 console.error(error)
