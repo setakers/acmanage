@@ -12,6 +12,16 @@ var ScoreQueryDao = function () {
             }
         });
     }
+    this.getUnhandledScoreQueries = function (callback) {
+        var conn = DaoUtil.getConnection();
+        conn.query('SELECT * from score_query where state = 2', function (err, results, fields) {
+            if(err){
+                callback(error());
+            }else{
+                callback(results);
+            }
+        });
+    }
 };
 
 function error() {

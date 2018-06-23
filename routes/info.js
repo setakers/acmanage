@@ -5,6 +5,8 @@ const TeacherService = require('../modules/TeacherService');
 const router = express.Router();
 var studentService = new StudentService();
 var teacherService= new TeacherService();
+
+//GET /api/info/stu/:student_id
 router.get('/stu/:student_id', (req, resp) => {
         var student_id = req.params['student_id'];
         console.log(student_id);
@@ -17,6 +19,7 @@ router.get('/stu/:student_id', (req, resp) => {
         })
     }
 );
+//GET /api/info/teacher/:teacher_id
 router.get('/teacher/:teacher_id', (req, resp) => {
         console.log(222);
         var teacher_id= req.params['teacher_id'];
@@ -29,12 +32,9 @@ router.get('/teacher/:teacher_id', (req, resp) => {
         })
     }
 );
+//PUT /api/info/userinfo
+//POST /api/info/userinfo
+//GET /api/info/userinfo
+//POST /api/info/changePasswd
 
-/*
-GET /api/info/teacher/:teacher_id
-PUT /api/info/userinfo
-POST /api/info/userinfo
-GET /api/info/userinfo
-POST /api/info/changePasswd
- */
 module.exports = router;

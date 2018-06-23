@@ -9,7 +9,8 @@ let attendService = new AttendService();
 let scoreQueryService = new ScoreQueryService()
 let studentService = new StudentService()
 let courseService= new CourseService()
-
+const TeacherService = require('../modules/TeacherService')
+let teacherService = new TeacherService()
 //GET /api/score/publicity
 router.get('/publicity', (req, resp) => {
     scoreQueryService.getAllScoreQueries(function (score_query) {
@@ -40,8 +41,16 @@ router.get('/queryexam/:student_id', (req, resp) => {
     })
 })
 //GET /api/score/teach_courses/:teacher_id
+router.get('/teach_courses/:teacher_id', (req, resp) => {
+    teacherService.getTeachCoursesByTeacherId(req.params['teacher_id'], function (teach_cources) {
+        let responseJson = JSON.stringify({tableData: teach_cources})
+        resp.header('Content-Type', 'application/json')
+            .status(200)
+            .send(responseJson)
+    })
+})
+
 //GET /api/score/stu_of_course/:course_id
-//service not finished yet************
 router.get('/stu_of_course/:course_id', (req, resp) => {
 
         let course_id = req.params['course_id'];
@@ -56,5 +65,13 @@ router.get('/stu_of_course/:course_id', (req, resp) => {
 //PUT /api/score/input_score
 //POST /api/score/add_query_score_change
 //GET /api/score/score_change_query
+router.get('/score_change_query', (req, resp) => {
+    scoreQueryService.getUnhandledScoreQueries(function (score_query) {
+        let responseJson = JSON.stringify({tableData: score_query});
+        resp.header('Content-Type', 'application/json')
+            .status(200)
+            .send(responseJson)
+    })
+})
 //PUT /api/score/handle_query
 module.exports = router;

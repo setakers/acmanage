@@ -13,6 +13,7 @@ var CourseService = function (userinfo) {
     this.getStudentsOfCourseByCourseId = function (course_id, callback) {
         var tableData = [];
         attendDao.getAttendsByCourseId(course_id, function (attends) {
+            console.log(attends)
             attends.forEach(function (attend, idx) {
                 var tmp = {
                     'student_id': null,
@@ -22,8 +23,10 @@ var CourseService = function (userinfo) {
                 tmp.score = attend['score'];
                 tmp.student_id = attend['student_id'];
                 asStudentDao.getAsStudentByStudentId(attend['student_id'], function (as_student) {
+                    console.log(as_student)
                     userDao.getUserByUserId(as_student[0]['user_id'], function (user) {
-                        tmp.student_name = user['user_name'];
+                        console.log(user)
+                        tmp.student_name = user[0]['user_name'];
                         tableData.push(tmp);
                         if (idx >= attends.length - 1) {
                             callback(tableData);

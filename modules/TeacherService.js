@@ -40,8 +40,8 @@ var TeacherService = function () {
                     'course_name': null,
                     'credit': null,
                     'introduction': null,
-                    'total_students': null,
-                    'unmarked_stu': null,
+                    'total_students': 0,
+                    'unmarked_stu': 0,
                 };
                 var course_id = teach['course_id'];
                 tmp['course_id'] = course_id;
