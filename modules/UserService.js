@@ -11,9 +11,6 @@ var UserService = function () {
     this.getUserByUsername = function (user_name, callback) {
         userDao.getUserByUserName(user_name, callback);
     }
-    this.addUser=function (user,callback) {
-        userDao.
-    }
 };
 
 
