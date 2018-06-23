@@ -77,6 +77,7 @@ var UserDao = function () {
                 }
             }
         });
+        DaoUtil.release(conn);
     }
 
     this.getUserByUserName = function (user_name, callback) {
@@ -89,6 +90,7 @@ var UserDao = function () {
             }
             // console.log(results);
         });
+        DaoUtil.release(conn);
     }
     this.getUserByUserId = function (user_id, callback) {
         var conn = DaoUtil.getConnection();
@@ -100,6 +102,7 @@ var UserDao = function () {
             }
             // console.log(results);
         });
+        DaoUtil.release(conn);
     }
 };
 

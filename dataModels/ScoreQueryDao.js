@@ -11,6 +11,7 @@ var ScoreQueryDao = function () {
                 callback(results);
             }
         });
+        DaoUtil.release(conn);
     }
 };
 

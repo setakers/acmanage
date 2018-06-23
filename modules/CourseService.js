@@ -25,7 +25,7 @@ var CourseService = function (userinfo) {
                     userDao.getUserByUserId(as_student[0]['user_id'], function (user) {
                         tmp.student_name = user['user_name'];
                         tableData.push(tmp);
-                        if (idx >= attends.length - 1) {
+                        if (tableData.length === attends.length) {
                             callback(tableData);
                         }
                     })

@@ -53,7 +53,7 @@ var TeacherService = function () {
                         tmp['total_students'] = attends.length;
                         tmp['unmarked_students'] = 0;
                         tableData.push(tmp);
-                        if (idx >= teaches.length - 1) {
+                        if (tableData.length === teaches.length) {
                             callback(tableData);
                         }
                     })

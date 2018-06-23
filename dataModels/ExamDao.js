@@ -21,6 +21,7 @@ var ExamDao = function () {
                 callback(results);
             }
         })
+        DaoUtil.release(conn);
     }
 };
 

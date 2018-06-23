@@ -11,6 +11,7 @@ var ClassroomDao = function () {
                 callback(results);
             }
         })
+        DaoUtil.release(conn);
     }
 };
 

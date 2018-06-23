@@ -17,6 +17,7 @@ var StudentDao = function () {
                 }
             }
         });
+        DaoUtil.release(conn);
     }
 };
 
