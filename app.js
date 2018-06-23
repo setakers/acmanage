@@ -30,6 +30,7 @@ app.use('', express.static('public'));
 app.use(config.getApiPath('login'), route.login);
 app.use(config.getApiPath('info'), route.info);
 app.use(config.getApiPath('score'), route.score);
+app.use(config.getApiPath('select'), route.select);
 
 
 // Error handling
