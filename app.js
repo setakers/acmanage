@@ -1,9 +1,9 @@
-const bodyParser    = require('body-parser');
-const fs            = require('fs');
-const express       = require('express');
-const config        = require('./config/config');
-const createError   = require('http-errors');
-const app           = express();
+const bodyParser = require('body-parser');
+const fs = require('fs');
+const express = require('express');
+const config = require('./config/config');
+const createError = require('http-errors');
+const app = express();
 
 // Requiring routers
 // The results are stored in var route:
@@ -11,11 +11,11 @@ const app           = express();
 //      route['hello']
 // or simply:
 //      route.hello
-var route       = {};
-var routesPath  = './routes/'
+var route = {};
+var routesPath = './routes/'
 var routerFiles = fs.readdirSync(routesPath);
 routerFiles.map(filename => {
-    if(filename.split('.').pop() === 'js') {
+    if (filename.split('.').pop() === 'js') {
         filename = filename.split('.')[0];
         route[filename] = require(routesPath + filename);
     }
@@ -28,6 +28,7 @@ app.use(bodyParser.json());
 app.use('', express.static('public'));
 // Here to route modules
 app.use(config.getApiPath('login'), route.login);
+app.use(config.getApiPath('info'), route.info);
 
 // Error handling
 // app.use((req, res, next) => {

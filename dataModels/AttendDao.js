@@ -10,6 +10,14 @@ var AttendDao = function () {
         });
         DaoUtil.release(conn);
     }
+    this.getAttendsByStudentId = function (student_id, callback) {
+        var conn = DaoUtil.getConnection();
+        conn.query('SELECT * from attend where student_id = ' + student_id, function (error, results, fields) {
+            if (error) throw error;
+            callback(results);
+        });
+        DaoUtil.release(conn);
+    }
 };
 
 function error() {

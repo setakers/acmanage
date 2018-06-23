@@ -77,6 +77,29 @@ var UserDao = function () {
             }
         });
     }
+
+    this.getUserByUserName = function (username, callback) {
+        var conn = DaoUtil.getConnection();
+        conn.query('SELECT * from user where user_name = \'' + user_name + '\'', function (err, results, fields) {
+            if (err) {
+                callback(error());
+            } else {
+                callback(results);
+            }
+            // console.log(results);
+        });
+    }
+    this.getUserByUserId = function (user_id, callback) {
+        var conn = DaoUtil.getConnection();
+        conn.query('SELECT * from user where user_id = \'' + user_id + '\'', function (err, results, fields) {
+            if (err) {
+                callback(error());
+            } else {
+                callback(results);
+            }
+            // console.log(results);
+        });
+    }
 };
 
 function error() {
