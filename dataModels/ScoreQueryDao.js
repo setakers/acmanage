@@ -1,23 +1,21 @@
-var DaoUtil = require('../util/DaoUtil');
 
 
 var ScoreQueryDao = function () {
-    this.getAllScoreQueries = function (callback) {
-        var conn = DaoUtil.getConnection();
+    this.getAllScoreQueries = function (conn,callback) {
         conn.query('SELECT * from score_query ', function (err, results, fields) {
             if(err){
-                callback(error());
+                console.error(error)
+                conn.rollback(function () {})
             }else{
                 callback(results);
             }
         });
-        DaoUtil.release(conn);
     }
-    this.getUnhandledScoreQueries = function (callback) {
-        var conn = DaoUtil.getConnection();
+    this.getUnhandledScoreQueries = function (conn,callback) {
         conn.query('SELECT * from score_query where state = 2', function (err, results, fields) {
             if(err){
-                callback(error());
+                console.error(error)
+                conn.rollback(function () {})
             }else{
                 callback(results);
             }

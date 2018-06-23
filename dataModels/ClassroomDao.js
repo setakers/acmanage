@@ -1,17 +1,13 @@
-var DaoUtil = require('../util/DaoUtil');
-
-
 var ClassroomDao = function () {
-    this.getClassroomByClassroomId = function (classroom_id, callback) {
-        var conn = DaoUtil.getConnection();
+    this.getClassroomByClassroomId = function (conn,classroom_id, callback) {
         conn.query('SELECT * from classroom where classroom_id = \'' + classroom_id + '\'', function (err, results, fields) {
             if (err) {
-                callback(error());
-            } else {
+                console.error(error)
+                conn.rollback(function () {})
+            }else {
                 callback(results);
             }
         })
-        DaoUtil.release(conn);
     }
 };
 

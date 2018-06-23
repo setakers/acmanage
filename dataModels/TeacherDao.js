@@ -1,4 +1,3 @@
-var DaoUtil = require('../util/DaoUtil');
 
 
 var TeacherDao = function () {

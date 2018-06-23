@@ -1,5 +1,3 @@
-var DaoUtil = require('../util/DaoUtil');
-
 
 var CourseTimeDao = function () {
 };
