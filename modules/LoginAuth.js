@@ -6,7 +6,7 @@ const UserDao = require('../dataModels/UserDao');
 var userDao=new UserDao();
 var LoginAuth = function (userinfo) {
     this.userinfo = userinfo;
-    var userInfoObject = LoginAuth.userInfoObject = {username: null, password: null, timestamp: null};
+    var userInfoObject = LoginAuth.userInfoObject = {user_name: null, password: null, timestamp: null};
     if (typeof userinfo !== 'string') return;
     var originalString = Buffer.from(userinfo, 'base64').toString();
     try {
@@ -20,20 +20,21 @@ var LoginAuth = function (userinfo) {
     }
     this.getUserRoles = function (callback) {
         // userDataModel.getRoleByUsername('admin', function (roles) {
-        userDao.getRoleByUsername(LoginAuth.userInfoObject.username, function (roles) {
+        userDao.getRoleByUsername(LoginAuth.userInfoObject.user_name, function (roles) {
             callback(Array.from(roles));
         })
     };
     this.isAuthorized = function (callback) {
-        userDao.isValidUsernameAndPassword(LoginAuth.userInfoObject.username, LoginAuth.userInfoObject.password, callback);
+        console.log('isAuthorized: '+LoginAuth.userInfoObject.user_name+'  ' +LoginAuth.userInfoObject.password);
+        userDao.isValidUsernameAndPassword(LoginAuth.userInfoObject.user_name, LoginAuth.userInfoObject.password, callback);
     };
     this.getAccessToken = function (callback) {
         this.isAuthorized(function (ok) {
             if (!ok) {
                 callback('');
             } else {
-                var payload = {'username': userInfoObject.username, 'roles': null, 'iat': getTimestamp()};
-                userDao.getRoleByUsername(userInfoObject.username, function (str) {
+                var payload = {'user_name': userInfoObject.user_name, 'roles': null, 'iat': getTimestamp()};
+                userDao.getRoleByUsername(userInfoObject.user_name, function (str) {
                     payload.roles = str;
                 });
                 callback(jwt.sign(payload, config.accessKey));
@@ -43,8 +44,8 @@ var LoginAuth = function (userinfo) {
 };
 
 // LoginAuth.isValidUsername = (username) => userDataModel.isValidUsername(username);
-LoginAuth.isUser = function (username, callback) {
-    userDao.isValidUsername(username, callback);
+LoginAuth.isUser = function (user_name, callback) {
+    userDao.isValidUsername(user_name, callback);
 };
 
 
@@ -73,7 +74,7 @@ LoginAuth.getRoles = (token) => {
 LoginAuth.getUsername = (token) => {
     try {
         var decoded = JSON.parse(jwt.verify(token, config.accessKey));
-        return decoded.username;
+        return decoded.user_name;
     } catch (e) {
         return '';
     }

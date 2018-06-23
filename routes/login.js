@@ -9,20 +9,22 @@ var userService = new UserService();
 var asStudentService = new AsStudentService();
 var asTeacherService = new AsTeacherService();
 router.post('/userinfo', (req, resp) => {
-    console.log('userinfo');
+    console.log('userinfo : ' + req.body.userinfo);
     var loginAuth = new LoginAuth(req.body.userinfo);
-    var send_resp = function (resp) {
+    var send_resp = function (res, resp) {
         var responseJSON = JSON.stringify(res);
         resp.header('Content-Type', 'application/json')
             .status(200)
             .send(responseJSON);
-    }
+    };
     loginAuth.isAuthorized(function (msg) {
+        console.log('msg: ' + msg);
         if (msg.err) {
             resp.sendStatus(204);
         } else {
             var res = {
                 'accessToken': null,
+                'user_id': null,
                 'user_name': null,
                 'character': null,
                 'gender': null,
@@ -33,21 +35,25 @@ router.post('/userinfo', (req, resp) => {
             };
             loginAuth.getAccessToken(function (token) {
                 res.accessToken = token;
-                var user_name = LoginAuth.userInfoObject.username;
+                var user_name = LoginAuth.userInfoObject.user_name;
+                console.log('user_name = ' + user_name);
                 userService.getUserByUsername(user_name, function (user) {
-                    res.user_name = user[0]['username'];
+                    console.log('user = ' + user);
+                    res.user_id = user[0]['user_id'];
+                    res.user_name = user[0]['user_name'];
                     res.character = user[0]['character'];
                     res.gender = user[0]['gender'];
                     res.email = user[0]['email'];
+                    res.phone = user[0]['phone'];
                     if (res.character === 0) {
-                        asStudentService(user_name, function (as_student) {
+                        asStudentService.getAsStudentByUserId(user[0]['user_id'], function (as_student) {
                             res.student_id = as_student[0]['student_id'];
-                            send_resp(resp);
+                            send_resp(res, resp);
                         })
                     } else if (res.character === 1) {
-                        asTeacherService(user_name, function (as_teacher) {
-                            res.teacher_id = as_teacher[0]['student_id'];
-                            send_resp(resp);
+                        asTeacherService.getAsTeacherByUserId(user[0]['user_id'], function (as_teacher) {
+                            res.teacher_id = as_teacher[0]['teacher_id'];
+                            send_resp(res, resp);
                         })
                     }
                 })

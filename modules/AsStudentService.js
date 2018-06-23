@@ -6,10 +6,10 @@ const AsStudentDao = require('../dataModels/AsStudentDao');
 
 const clone = require('../util/utils');
 
-var asStudentDao= new AsStudentDao();
+var asStudentDao = new AsStudentDao();
 var AsStudentService = function () {
-    this.getAsStudentByUserId= function (user_id, callback) {
-        asStudentDao.getAsStudentByUserId(user_id,callback);
+    this.getAsStudentByUserId = function (user_id, callback) {
+        asStudentDao.getAsStudentByUserId(user_id, callback);
     }
 };
 

@@ -5,7 +5,7 @@ module.exports = {
     frontendPort        : 8080,
     hostname            : 'localhost',
     // Session time limit in seconds
-    sessionTimeLimit    : 30,
+    sessionTimeLimit    : 30000,
     // Key for encrypting app token
     accessKey           : 'SEtakers2018AccessKey',
     getStaticPath       : path => ('/#/' + path).replace('//', '/'),

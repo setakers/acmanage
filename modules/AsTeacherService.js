@@ -7,11 +7,11 @@ const AsTeacherDao= require('../dataModels/AsTeacherDao');
 const clone = require('../util/utils');
 
 var asTeacherDao= new AsTeacherDao();
-var AsStudentService = function () {
+var AsTeacherService = function () {
     this.getAsTeacherByUserId= function (user_id, callback) {
         asTeacherDao.getAsTeacherByUserId(user_id,callback);
     }
 };
 
 
-module.exports = AsStudentService ;
+module.exports = AsTeacherService ;

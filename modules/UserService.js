@@ -8,8 +8,8 @@ const clone = require('../util/utils');
 
 var userDao = new UserDao();
 var UserService = function () {
-    this.getUserByUsername = function (username, callback) {
-        userDao.getUserByUserName(username, callback);
+    this.getUserByUsername = function (user_name, callback) {
+        userDao.getUserByUserName(user_name, callback);
     }
 };
 

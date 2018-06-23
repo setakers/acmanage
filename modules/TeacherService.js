@@ -51,7 +51,7 @@ var TeacherService = function () {
                     tmp['introduction'] = course[0]['introduction'];
                     attendDao.getAttendsByCourseId(course_id, function (attends) {
                         tmp['total_students'] = attends.length;
-                        tmp['unmarked_students']=0;
+                        tmp['unmarked_students'] = 0;
                         tableData.push(tmp);
                         if (idx >= teaches.length - 1) {
                             callback(tableData);
@@ -59,6 +59,26 @@ var TeacherService = function () {
                     })
                 })
 
+            })
+        })
+    }
+
+    this.getTeacherInfoByTeacherId = function (teacher_id, callback) {
+        var info = {
+            'college': null,
+            'num_of_courses': null
+        };
+        asTeacherDao.getAsTeacherByTeacherId(teacher_id, function (as_teacher) {
+            var user_id = as_teacher[0]['user_id'];
+            belongToDao.getBelongToByUserId(user_id, function (belong_to) {
+                var college_id = belong_to[0]['college_id'];
+                collegeDao.getCollegeByCollegeId(college_id, function (college) {
+                    info.college = college[0]['college_name'];
+                    teachDao.getTeachByTeacherId(teacher_id, function (teaches) {
+                        info.num_of_courses = teaches.length;
+                        callback(info);
+                    })
+                })
             })
         })
     }

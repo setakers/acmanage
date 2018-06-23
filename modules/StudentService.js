@@ -32,12 +32,18 @@ var asTeacherDao = new AsTeacherDao();
 var userDao = new UserDao();
 var StudentService = function () {
     this.getStudentInfoByStudentId = function (student_id, callback) {
-        var info = {'class': null, 'admission_date': null, 'college': null, 'major': null, 'num_of_courses': null};
+        var info = {
+            'class': null,
+            'admission_date': null,
+            'college': null,
+            'major': null,
+            'num_of_courses': null
+        };
         studentDao.getStudentByStudentId(student_id, function (student) {
             info.class = student['class'];
             info.admission_date = student['admission_date'];
             asStudentDao.getAsStudentByStudentId(student_id, function (as_student) {
-                var user_id = as_student[0]['user_id'];
+                    var user_id = as_student[0]['user_id'];
                 belongToDao.getBelongToByUserId(user_id, function (belong_to) {
                     var college_id = belong_to[0]['college_id'];
                     collegeDao.getCollegeByCollegeId(college_id, function (college) {
