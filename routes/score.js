@@ -23,7 +23,7 @@ router.get('/publicity', (req, resp) => {
 })
 //GET /api/score/stuscore/:student_id
 router.get('/stuscore/:student_id', (req, resp) => {
-    studentService.getCoursesInfoByStudentId(req.params['student_id'], function (course_info) {
+    studentService.getScoreInfoByStudentId(req.params['student_id'], function (course_info) {
         console.log('in stuscore, rtn data : ' + course_info);
         let responseJson = JSON.stringify({tableData: course_info});
         resp.header('Content-Type', 'application/json')

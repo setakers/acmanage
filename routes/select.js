@@ -2,7 +2,9 @@ const express = require('express');
 const config = require('../config/config');
 const router = express.Router();
 const CourseService = require('../modules/CourseService')
-let courseService = new CourseService()
+let courseService = new CourseService();
+const StudentService = require('../modules/StudentService')
+let studentService = new StudentService()
 //GET select/query_courses
 router.get('/query_courses', (req, resp) => {
     courseService.getAllCourses(function(course_query){
@@ -12,9 +14,9 @@ router.get('/query_courses', (req, resp) => {
             .send(responseJson)
     })
 });
-
 //GET select/selected/:student_id`
-
+router.get('/selected/:student_id',(req,resp)=>{
+})
 //GET select/selected_status/:student_id`
 
 

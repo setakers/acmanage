@@ -32,7 +32,7 @@ var teachDao = new TeachDao();
 var asTeacherDao = new AsTeacherDao();
 var userDao = new UserDao();
 var StudentService = function () {
-    this.getCoursesInfoByStudentId = function (student_id, callback) {
+    this.getScoreInfoByStudentId = function (student_id, callback) {
         var tableData = [];
         ConnPool.doTrans(function (con) {
             attendDao.getAttendsByStudentId(con,student_id, function (attends) {
