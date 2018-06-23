@@ -29,6 +29,8 @@ app.use('', express.static('public'));
 // Here to route modules
 app.use(config.getApiPath('login'), route.login);
 app.use(config.getApiPath('info'), route.info);
+app.use(config.getApiPath('score'), route.score);
+
 
 // Error handling
 // app.use((req, res, next) => {

@@ -30,7 +30,8 @@ var ScoreQueryService = function () {
                 tmp['reason'] = score_query['reason'];
                 tmp['state'] = score_query['state'];
                 tmp['query_time'] = score_query['query_time'].toLocaleString();
-                tmp['deal_time'] = score_query['deal_time'].toLocaleString();
+                if(score_query['deal_time']!==null)
+                    tmp['deal_time'] = score_query['deal_time'].toLocaleString();
                 courseDao.getCourseByCourseId(score_query['course_id'], function (course) {
                     tmp['course_name'] = course[0]['course_name'];
                     asTeacherDao.getAsTeacherByTeacherId(score_query['teacher_id'], function (as_teacher) {
