@@ -1,8 +1,10 @@
 const express = require('express');
 const config = require('../config/config');
 const StudentService = require('../modules/StudentService');
+const TeacherService = require('../modules/TeacherService');
 const router = express.Router();
 var studentService = new StudentService();
+var teacherService= new TeacherService();
 router.get('/stu/:student_id', (req, resp) => {
         var student_id = req.params['student_id'];
         console.log(student_id);
@@ -10,7 +12,20 @@ router.get('/stu/:student_id', (req, resp) => {
             var responseJSON = JSON.stringify(info);
             resp.header('Content-Type', 'application/json')
                 .status(200)
-                .send(responseJSON);
+                .send(responseJSON)
+                .end();
+        })
+    }
+);
+router.get('/teacher/:teacher_id', (req, resp) => {
+        console.log(222);
+        var teacher_id= req.params['teacher_id'];
+        teacherService.getTeacherInfoByTeacherId(teacher_id, function (info) {
+            var responseJSON = JSON.stringify(info);
+            resp.header('Content-Type', 'application/json')
+                .status(200)
+                .send(responseJSON)
+                .end();
         })
     }
 );
