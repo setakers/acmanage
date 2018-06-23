@@ -15,7 +15,8 @@ let teacherService = new TeacherService()
 router.get('/publicity', (req, resp) => {
     scoreQueryService.getAllScoreQueries(function (score_query) {
         let responseJson = JSON.stringify({tableData: score_query});
-        console.log('in publicity, rtn data: ' + score_query);
+        console.log('in publicity, rtn data: ');
+        console.log(score_query);
         resp.header('Content-Type', 'application/json')
             .status(200)
             .send(responseJson)
@@ -43,7 +44,9 @@ router.get('/queryexam/:student_id', (req, resp) => {
 //GET /api/score/teach_courses/:teacher_id
 router.get('/teach_courses/:teacher_id', (req, resp) => {
     teacherService.getTeachCoursesByTeacherId(req.params['teacher_id'], function (teach_cources) {
+        console.log('GET /api/score/teach_courses/:teacher_id');
         let responseJson = JSON.stringify({tableData: teach_cources})
+        console.log(responseJson);
         resp.header('Content-Type', 'application/json')
             .status(200)
             .send(responseJson)
@@ -55,7 +58,8 @@ router.get('/stu_of_course/:course_id', (req, resp) => {
 
         let course_id = req.params['course_id'];
         courseService.getStudentsOfCourseByCourseId(course_id, function (attends) {
-            let responseJSON = JSON.stringify(Array.from(attends));
+            let responseJSON = JSON.stringify({'students':Array.from(attends)});
+            console.log(responseJSON);
             resp.header('Content-Type', 'application/json')
                 .status(200)
                 .send(responseJSON);

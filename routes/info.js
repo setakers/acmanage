@@ -31,8 +31,15 @@ router.get('/teacher/:teacher_id', (req, resp) => {
     }
 );
 //PUT /api/info/userinfo
+router.put('/userinfo', (req, resp) => {
+   console.log(req);
+});
 //POST /api/info/userinfo
 //GET /api/info/userinfo
-//POST /api/info/changePasswd
+//PUT /api/info/changePasswd
+router.put('/changePasswd', (req, resp) => {
+    console.log(req);
+});
+
 
 module.exports = router;
