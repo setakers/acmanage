@@ -5,7 +5,7 @@ var ConnPool = mysql.createPool({
     host: 'localhost',
     database: 'setakers',
     user: 'root',
-    password: '0325',
+    password: 'clhclh19971123',
     debug: false,
     connectionLimit: 30
 });
