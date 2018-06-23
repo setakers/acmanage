@@ -31,6 +31,34 @@ var teachDao = new TeachDao();
 var asTeacherDao = new AsTeacherDao();
 var userDao = new UserDao();
 var StudentService = function () {
+    this.getCoursesInfoByStudentId = function (student_id, callback) {
+        var tableData = [];
+        attendDao.getAttendsByStudentId(student_id, function (attends) {
+            attends.forEach(function (attend, idx) {
+                var info = {
+                    'teacher_name': null,
+                    'course_name': null,
+                    'score': null,
+                };
+                info.score = attend['score'];
+                var course_id = attend['course_id'];
+                courseDao.getCourseByCourseId(course_id, function (course) {
+                    info.course_name = course[0]['course_name'];
+                    teachDao.getTeachByCourseId(course_id, function (teach) {
+                        asTeacherDao.getAsTeacherByTeacherId(teach[0]['teacher_id'], function (as_teacher) {
+                            userDao.getUserByUserId(as_teacher[0]['user_id'], function (user) {
+                                info.teacher_name = user[0]['user_name'];
+                                tableData.push(info);
+                                if (idx >= attends.length - 1) {
+                                    callback(tableData);
+                                }
+                            })
+                        })
+                    })
+                })
+            })
+        })
+    }
     this.getStudentInfoByStudentId = function (student_id, callback) {
         var info = {
             'class': null,
@@ -43,7 +71,7 @@ var StudentService = function () {
             info.class = student['class'];
             info.admission_date = student['admission_date'];
             asStudentDao.getAsStudentByStudentId(student_id, function (as_student) {
-                    var user_id = as_student[0]['user_id'];
+                var user_id = as_student[0]['user_id'];
                 belongToDao.getBelongToByUserId(user_id, function (belong_to) {
                     var college_id = belong_to[0]['college_id'];
                     collegeDao.getCollegeByCollegeId(college_id, function (college) {

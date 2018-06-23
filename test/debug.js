@@ -1,5 +1,6 @@
-const StudentService = require('../modules/StudentService');
-var studentService = new StudentService();
-studentService.getStudentInfoByStudentId(3, function (data) {
-    console.log(data);
+const CourseService = require('../modules/CourseService')
+
+var courseService = new CourseService();
+courseService.getStudentsOfCourseByCourseId(1, function (students) {
+    console.log(students);
 })

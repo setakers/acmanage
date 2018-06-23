@@ -3,24 +3,36 @@ const config = require('../config/config');
 const AttendService = require('../modules/AttendService');
 const ScoreQueryService = require('../modules/ScoreQueryService')
 const StudentService = require('../modules/StudentService')
+const CourseService= require('../modules/CourseService')
 const router = express.Router();
 let attendService = new AttendService();
 let scoreQueryService = new ScoreQueryService()
 let studentService = new StudentService()
+let courseService= new CourseService()
 
 //GET /api/score/publicity
-router.get('/publicity', (req,resp)=>{
-    scoreQueryService.getAllScoreQueries(function(score_query){
-        let responseJson = JSON.stringify({tableData:score_query})
+router.get('/publicity', (req, resp) => {
+    scoreQueryService.getAllScoreQueries(function (score_query) {
+        let responseJson = JSON.stringify({tableData: score_query});
+        console.log('in publicity, rtn data: ' + score_query);
         resp.header('Content-Type', 'application/json')
             .status(200)
             .send(responseJson)
     })
 })
 //GET /api/score/stuscore/:student_id
+router.get('/stuscore/:student_id', (req, resp) => {
+    studentService.getCoursesInfoByStudentId(req.params['student_id'], function (course_info) {
+        console.log('in stuscore, rtn data : ' + course_info);
+        let responseJson = JSON.stringify({tableData: course_info});
+        resp.header('Content-Type', 'application/json')
+            .status(200)
+            .send(responseJson)
+    })
+})
 //GET /api/score/queryexam/:student_id
-router.get('/queryexam/:student_id', (req,resp)=>{
-    studentService.getExamInfoByStudentId(req.params['student_id'], function(exam_query){
+router.get('/queryexam/:student_id', (req, resp) => {
+    studentService.getExamInfoByStudentId(req.params['student_id'], function (exam_query) {
         let responseJson = JSON.stringify({tableData: exam_query})
         resp.header('Content-Type', 'application/json')
             .status(200)
@@ -31,8 +43,9 @@ router.get('/queryexam/:student_id', (req,resp)=>{
 //GET /api/score/stu_of_course/:course_id
 //service not finished yet************
 router.get('/stu_of_course/:course_id', (req, resp) => {
+
         let course_id = req.params['course_id'];
-        attendService.getAttendsByCourseId(course_id, function (attends) {
+        courseService.getStudentsOfCourseByCourseId(course_id, function (attends) {
             let responseJSON = JSON.stringify(Array.from(attends));
             resp.header('Content-Type', 'application/json')
                 .status(200)
