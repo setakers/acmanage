@@ -1,3 +1,5 @@
+# drop database  setakers;
+
 CREATE DATABASE IF NOT EXISTS setakers;
 USE setakers;
 CREATE TABLE IF NOT EXISTS `user`(
@@ -20,6 +22,13 @@ CREATE TABLE IF NOT EXISTS `teacher`(
     `teacher_id` BIGINT PRIMARY KEY auto_increment
 );
 
+CREATE TABLE IF NOT EXISTS `classroom`(
+  classroom_id BIGINT AUTO_INCREMENT PRIMARY KEY,
+  room_name VARCHAR(80) UNIQUE,
+  capacity INT
+)ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1;
+
+
 CREATE TABLE IF NOT EXISTS `course`(
     `course_id` BIGINT PRIMARY KEY auto_increment,
     `course_name` VARCHAR(40),
@@ -27,8 +36,9 @@ CREATE TABLE IF NOT EXISTS `course`(
     `introduction` VARCHAR(200),
     `state` TINYINT, # 0--结课  1--进行中
     `classroom_id` BIGINT,
-    FOREIGN KEY(classroom_id) REFERENCES classroom(classroom_id),
+    FOREIGN KEY(classroom_id) REFERENCES classroom(classroom_id)
 );
+
 
 CREATE TABLE IF NOT EXISTS `major`(
     `major_id` BIGINT PRIMARY KEY auto_increment,
@@ -118,13 +128,6 @@ CREATE TABLE IF NOT EXISTS `score_query`(
   FOREIGN KEY (teacher_id) REFERENCES teacher(teacher_id),
   FOREIGN KEY (student_id) REFERENCES student(student_id),
   FOREIGN KEY (course_id) REFERENCES course(course_id)
-)ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1;
-
-
-CREATE TABLE IF NOT EXISTS `classroom`(
-  classroom_id BIGINT AUTO_INCREMENT PRIMARY KEY,
-  room_name VARCHAR(80) UNIQUE,
-  capacity INT
 )ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1;
 
 
