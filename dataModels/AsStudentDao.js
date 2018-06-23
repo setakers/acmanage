@@ -1,22 +1,23 @@
-var DaoUtil = require('../util/DaoUtil');
-
-
 var AsStudentDao = function () {
-    this.getAsStudentByUserId = function (user_id, callback) {
-        var conn = DaoUtil.getConnection();
+    this.getAsStudentByUserId = function (conn, user_id, callback) {
         conn.query('SELECT * from as_student where user_id = ' + user_id, function (error, results, fields) {
-            if (error) throw error;
+            if (error)
+            {
+                console.error(error);
+                conn.rollback(function () {})
+            }
             callback(results);
         });
-        DaoUtil.release(conn);
     }
-    this.getAsStudentByStudentId = function (student_id, callback) {
-        var conn = DaoUtil.getConnection();
+    this.getAsStudentByStudentId = function (conn, student_id, callback) {
         conn.query('SELECT * from as_student where student_id = '+student_id, function (error, results, fields) {
-            if (error) throw error;
+            if (error)
+            {
+                console.error(error);
+                conn.rollback(function () {})
+            }
             callback(results);
         });
-        DaoUtil.release(conn);
     }
 };
 

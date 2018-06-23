@@ -3,7 +3,7 @@ var mysql = require('mysql'),
 
 var ConnPool = mysql.createPool({
     host: 'localhost',
-    database: 'test',
+    database: 'setakers',
     user: 'root',
     password: 'clhclh19971123',
     debug: false,
