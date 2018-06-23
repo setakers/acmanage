@@ -1,14 +1,13 @@
-var DaoUtil = require('../util/DaoUtil');
-
 
 var CollegeDao = function () {
-    this.getCollegeByCollegeId = function (college_id, callback) {
-        var conn = DaoUtil.getConnection();
+    this.getCollegeByCollegeId = function (conn,college_id, callback) {
         conn.query('SELECT * from college where college_id = ' + college_id, function (error, results, fields) {
-            if (error) throw error;
+            if (error) {
+                console.error(error)
+                conn.rollback(function () {})
+            }
             callback(results);
         });
-        DaoUtil.release(conn);
     }
 };
 

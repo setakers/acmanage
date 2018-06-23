@@ -1,27 +1,24 @@
-var DaoUtil = require('../util/DaoUtil');
-
 
 var ExamDao = function () {
-    this.getExamByExamId = function (exam_id, callback) {
-        var conn = DaoUtil.getConnection();
+    this.getExamByExamId = function (conn,exam_id, callback) {
         conn.query('SELECT * from exam where exam_id = ' + exam_id, function (err, results, fields) {
             if (err) {
-                callback(error());
+                console.error(error)
+                conn.rollback(function () {})
             } else {
                 callback(results);
             }
         })
     }
     this.getExamsByCourseId=function(course_id,callback){
-        var conn = DaoUtil.getConnection();
         conn.query('SELECT * from exam where course_id = ' + course_id, function (err, results, fields) {
             if (err) {
-                callback(error());
+                console.error(error)
+                conn.rollback(function () {})
             } else {
                 callback(results);
             }
         })
-        DaoUtil.release(conn);
     }
 };
 

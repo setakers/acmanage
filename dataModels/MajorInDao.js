@@ -1,14 +1,12 @@
-var DaoUtil = require('../util/DaoUtil');
-
 
 var MajorInDao = function () {
-    this.getMajorInByStudentId = function (student_id, callback) {
-        var conn = DaoUtil.getConnection();
+    this.getMajorInByStudentId = function (conn,student_id, callback) {
         conn.query('SELECT * from major_in where student_id = ' + student_id, function (error, results, fields) {
-            if (error) throw error;
-            callback(results);
+            if (error){
+                console.error(error)
+                conn.rollback(function () {})
+            }callback(results);
         });
-        DaoUtil.release(conn);
     }
 };
 
