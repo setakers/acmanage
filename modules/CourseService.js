@@ -9,8 +9,40 @@ const ConnPool = require("../util/ConnPool");
 var attendDao = new AttendDao();
 var asStudentDao = new AsStudentDao();
 var userDao = new UserDao();
+const CourseDao = require('../dataModels/CourseDao')
+let courseDao = new CourseDao()
+const ClassroomDao = require('../dataModels/ClassroomDao')
+let classroomDao = new ClassroomDao()
 
 var CourseService = function (userinfo) {
+    this.getAllCourses = function(callback){
+        let return_value = []
+        ConnPool.doTrans(function(con){
+            courseDao.getCourse(con,function(courses){
+                if(courses.length === 0)
+                    callback(return_value)
+                else{
+                    courses.forEach(function(course,idx){
+                        let tmp = {
+                            'course_id': course['course_id'],
+                            'course_name': course['course_name'],
+                            'room_name': null,
+                            'credit': course['credit'],
+                            'introduction': course['introduction'],
+                        }
+                        classroomDao.getClassroomByClassroomId(con,course.classroom_id,function(classroom){
+                            tmp['room_name']=classroom[0]['room_name']
+                            return_value.push(tmp)
+                            if(return_value.length == courses.length)
+                                con.commit(function(){
+                                    callback(return_value)
+                                })
+                        })
+                    })
+                }
+            })
+        })
+    }
     this.getStudentsOfCourseByCourseId = function (course_id, callback) {
         var tableData = [];
         ConnPool.doTrans(function (con) {

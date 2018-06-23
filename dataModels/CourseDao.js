@@ -1,18 +1,23 @@
 
 var CourseDao = function () {
-    this.getCourse = function (conn,coursecallback) {
-        conn.query('SELECT * from course where course_id = ' + course_id, function (error, results, fields) {
+    this.getCourse = function (conn,callback) {
+        conn.query('SELECT * from course', function (error, results, fields) {
             if (error){
                 console.error(error)
                 conn.rollback(function () {})
             }
-            callback(results);
+            else
+                callback(results);
         });
     }
     this.getCourseByCourseId = function (conn,course_id, callback) {
         conn.query('SELECT * from course where course_id = ' + course_id, function (error, results, fields) {
-            if (error) throw error;
-            callback(results);
+            if (error) {
+                console.error(error)
+                conn.rollback(function () {})
+            }
+            else
+                callback(results);
         });
     }
 };
