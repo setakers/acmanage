@@ -31,7 +31,19 @@ var classroomDao = new ClassroomDao();
 var teachDao = new TeachDao();
 var asTeacherDao = new AsTeacherDao();
 var userDao = new UserDao();
+const CrossDao = require('../dataModels/CrossDao')
+let crossDao = new CrossDao()
 var StudentService = function () {
+    this.getCoursesByStudentId = function (student_id, callback) {
+        var tableData = [];
+        ConnPool.doTrans(function (con) {
+            crossDao.getCoursesByStudentId(con,student_id,function(courses){
+                con.commit(function(){
+                    callback(courses)
+                })
+            })
+        })
+    }
     this.getScoreInfoByStudentId = function (student_id, callback) {
         var tableData = [];
         ConnPool.doTrans(function (con) {
