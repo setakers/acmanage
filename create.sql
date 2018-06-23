@@ -141,7 +141,7 @@ CREATE TABLE IF NOT EXISTS `exam`(
 )ENGINE=InnoDB AUTO_INCREMENT=1;
 
 
-CREATE TABLE IF NOT EXISTS `select`(
+CREATE TABLE IF NOT EXISTS `select_course`(
     `course_id` BIGINT,
     `student_id` BIGINT,
     `state` TINYINT, # 0--refused  1--accepted  2--pending
