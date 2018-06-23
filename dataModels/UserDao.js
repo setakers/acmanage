@@ -49,7 +49,6 @@ var UserDao = function () {
                 })
             } else {
                 var res = hasUser(results);
-                console.log('res : ' + res);
                 callback(res);
             }
         });

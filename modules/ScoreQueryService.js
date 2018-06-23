@@ -15,7 +15,6 @@ var ScoreQueryService = function () {
         var tableData = [];
         ConnPool.doTrans(function (con) {
             scoreQueryDao.getAllScoreQueries(con, function (score_queries) {
-                console.log('in getAllScoreQueries, score_queries : ' + score_queries);
                 score_queries.forEach(function (score_query, idx) {
                     var tmp = {
                         'teacher_name': null,

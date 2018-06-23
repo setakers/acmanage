@@ -5,8 +5,9 @@ var BelongToDao = function () {
             if (error){
                 console.error(error)
                 conn.rollback(function () {})
+            }else{
+                callback(results);
             }
-            callback(results);
         });
     }
 };

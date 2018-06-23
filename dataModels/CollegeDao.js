@@ -3,10 +3,11 @@ var CollegeDao = function () {
     this.getCollegeByCollegeId = function (conn,college_id, callback) {
         conn.query('SELECT * from college where college_id = ' + college_id, function (error, results, fields) {
             if (error) {
-                console.error(error)
+                console.error(error);
                 conn.rollback(function () {})
+            }else{
+                callback(results);
             }
-            callback(results);
         });
     }
 };
