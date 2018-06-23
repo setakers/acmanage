@@ -25,7 +25,7 @@ CREATE TABLE IF NOT EXISTS `course`(
     `course_name` VARCHAR(40),
     `credit` FLOAT,
     `introduction` VARCHAR(200),
-    `state` TINYINT,
+    `state` TINYINT, # 0--结课  1--进行中
     `classroom_id` BIGINT,
     FOREIGN KEY(classroom_id) REFERENCES classroom(classroom_id),
 );
