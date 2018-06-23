@@ -136,3 +136,13 @@ CREATE TABLE IF NOT EXISTS `exam`(
   FOREIGN KEY (course_id) REFERENCES course(course_id),
   FOREIGN KEY (classroom_id) REFERENCES classroom(classroom_id)
 )ENGINE=InnoDB AUTO_INCREMENT=1;
+
+
+CREATE TABLE IF NOT EXISTS `select`(
+    `course_id` BIGINT,
+    `student_id` BIGINT,
+    `state` TINYINT, # 0--refused  1--accepted  2--pending
+    FOREIGN KEY(course_id) REFERENCES course(course_id),
+    FOREIGN KEY(student_id) REFERENCES student(student_id),
+    PRIMARY KEY(course_id, student_id)
+);
