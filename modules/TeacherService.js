@@ -8,7 +8,6 @@ const AttendDao = require('../dataModels/AttendDao');
 const BelongToDao = require('../dataModels/BelongToDao');
 const AsStudentDao = require('../dataModels/AsStudentDao');
 const CollegeDao = require('../dataModels/CollegeDao');
-const ConnPool=require('../util/ConnPool');
 const MajorInDao = require('../dataModels/MajorInDao');
 const MajorDao = require('../dataModels/MajorDao');
 const ExamDao = require('../dataModels/ExamDao');
@@ -34,36 +33,32 @@ var userDao = new UserDao();
 var TeacherService = function () {
     this.getTeachCoursesByTeacherId = function (teacher_id, callback) {
         var tableData = [];
-        ConnPool.doTrans(function (con) {
-            teachDao.getTeachByTeacherId(con,teacher_id, function (teaches) {
-                teaches.forEach(function (teach, idx) {
-                    var tmp = {
-                        'course_id': null,
-                        'course_name': null,
-                        'credit': null,
-                        'introduction': null,
-                        'total_students': 0,
-                        'unmarked_stu': 0,
-                    };
-                    var course_id = teach['course_id'];
-                    tmp['course_id'] = course_id;
-                    courseDao.getCourseByCourseId(con,course_id, function (course) {
-                        tmp['course_name'] = course[0]['course_name'];
-                        tmp['credit'] = course[0]['credit'];
-                        tmp['introduction'] = course[0]['introduction'];
-                        attendDao.getAttendsByCourseId(con,course_id, function (attends) {
-                            tmp['total_students'] = attends.length;
-                            tmp['unmarked_students'] = 0;
-                            tableData.push(tmp);
-                            if (tableData.length === teaches.length) {
-                                con.commit(function () {
-                                    callback(tableData);
-                                })
-                            }
-                        })
+        teachDao.getTeachByTeacherId(teacher_id, function (teaches) {
+            teaches.forEach(function (teach, idx) {
+                var tmp = {
+                    'course_id': null,
+                    'course_name': null,
+                    'credit': null,
+                    'introduction': null,
+                    'total_students': null,
+                    'unmarked_stu': null,
+                };
+                var course_id = teach['course_id'];
+                tmp['course_id'] = course_id;
+                courseDao.getCourseByCourseId(course_id, function (course) {
+                    tmp['course_name'] = course[0]['course_name'];
+                    tmp['credit'] = course[0]['credit'];
+                    tmp['introduction'] = course[0]['introduction'];
+                    attendDao.getAttendsByCourseId(course_id, function (attends) {
+                        tmp['total_students'] = attends.length;
+                        tmp['unmarked_students'] = 0;
+                        tableData.push(tmp);
+                        if (tableData.length === teaches.length) {
+                            callback(tableData);
+                        }
                     })
-
                 })
+
             })
         })
     }
@@ -73,19 +68,15 @@ var TeacherService = function () {
             'college': null,
             'num_of_courses': null
         };
-        ConnPool.doTrans(function (conn) {
-            asTeacherDao.getAsTeacherByTeacherId(conn,teacher_id, function (as_teacher) {
-                var user_id = as_teacher[0]['user_id'];
-                belongToDao.getBelongToByUserId(conn,user_id, function (belong_to) {
-                    var college_id = belong_to[0]['college_id'];
-                    collegeDao.getCollegeByCollegeId(conn,college_id, function (college) {
-                        info.college = college[0]['college_name'];
-                        teachDao.getTeachByTeacherId(conn,teacher_id, function (teaches) {
-                            info.num_of_courses = teaches.length;
-                            conn.commit(function () {
-                                callback(info);
-                            })
-                        })
+        asTeacherDao.getAsTeacherByTeacherId(teacher_id, function (as_teacher) {
+            var user_id = as_teacher[0]['user_id'];
+            belongToDao.getBelongToByUserId(user_id, function (belong_to) {
+                var college_id = belong_to[0]['college_id'];
+                collegeDao.getCollegeByCollegeId(college_id, function (college) {
+                    info.college = college[0]['college_name'];
+                    teachDao.getTeachByTeacherId(teacher_id, function (teaches) {
+                        info.num_of_courses = teaches.length;
+                        callback(info);
                     })
                 })
             })

@@ -1,12 +1,14 @@
+var DaoUtil = require('../util/DaoUtil');
+var pool = require('../test/debug');
+
 var UserDao = function () {
-    this.findAllUsers = function (conn,callback) {
+    this.findAllUsers = function (callback) {
+        var conn = DaoUtil.getConnection();
         conn.query('SELECT * from user', function (error, results, fields) {
-            if (error){
-                console.error(error)
-                conn.rollback(function () {})
-            }
+            if (error) throw error;
             callback(results);
         });
+        DaoUtil.release(conn);
     };
 
     function hasUser(results) {
@@ -18,42 +20,47 @@ var UserDao = function () {
         }
     }
 
-    this.isValidUsername = function (conn,user_name, callback) {
+    this.isValidUsername = function (user_name, callback) {
         // console.log('UserDao.isValidUsername');
         if (typeof user_name !== 'string') {
             callback(error());
         }
+        var conn = DaoUtil.getConnection();
         conn.query('SELECT * from user where user_name = \'' + user_name + '\'', function (err, results, fields) {
-            if (err){
-                console.error(error)
-                conn.rollback(function () {})
-            }else {
+            if (err) {
+                console.log('DaoUtil.getConnection().query error!');
+                callback(error());
+            } else {
                 var res = hasUser(results);
                 callback(res);
             }
             // console.log(results);
         });
+        DaoUtil.release(conn);
     };
-    this.isValidUsernameAndPassword = function (conn,user_name, password, callback) {
+    this.isValidUsernameAndPassword = function (user_name, password, callback) {
         if (typeof user_name !== 'string' || typeof password !== 'string') {
             callback(error());
         }
+        var conn = DaoUtil.getConnection();
         conn.query('SELECT * from user where user_name = \'' + user_name + '\' and password = \'' + password + '\'', function (err, results, fields) {
             if (err) {
-                console.error(error)
-                conn.rollback(function () {})
+                console.log('DaoUtil.getConnection().query error!');
+                callback(error());
             } else {
                 var res = hasUser(results);
                 console.log('res : ' + res);
                 callback(res);
             }
         });
+        DaoUtil.release(conn);
     };
-    this.getRoleByUsername = function (conn,user_name, callback) {
+    this.getRoleByUsername = function (user_name, callback) {
+        var conn = DaoUtil.getConnection();
         conn.query('SELECT * from user where user_name = \'' + user_name + '\'', function (err, results, fields) {
-            if (err){
-                console.error(error)
-                conn.rollback(function () {})
+            if (err) {
+                console.log('DaoUtil.getConnection().query error!');
+                callback(error());
             } else {
                 if (!hasUser(results)) {
                     callback(error());
@@ -70,43 +77,59 @@ var UserDao = function () {
                 }
             }
         });
+        DaoUtil.release(conn);
     }
 
-    this.getUserByUserName = function (conn,user_name, callback) {
+    this.getUserByUserName = function (user_name, callback) {
+        var conn = DaoUtil.getConnection();
         conn.query('SELECT * from user where user_name = \'' + user_name + '\'', function (err, results, fields) {
             if (err) {
-                console.error(error)
-                conn.rollback(function () {})
+                callback(error());
             } else {
                 callback(results);
             }
             // console.log(results);
         });
+        DaoUtil.release(conn);
     }
-    this.getUserByUserId = function (conn,user_id, callback) {
+    this.getUserByUserId = function (user_id, callback) {
+        var conn = DaoUtil.getConnection();
         conn.query('SELECT * from user where user_id = \'' + user_id + '\'', function (err, results, fields) {
-            if (err){
-                console.error(error)
-                conn.rollback(function () {})
+            if (err) {
+                callback(error());
             } else {
                 callback(results);
             }
             // console.log(results);
         });
+        DaoUtil.release(conn);
     }
 
-    // this.addUser = function (conn, user, callback) {
-    //     conn.query("INSERT INTO user values(null,'tom','111')",
-    //         function (err, ret) {
-    //             if (err) {
-    //                 console.error(err);
-    //                 conn.rollback(function () {
-    //                 });
-    //             } else {
-    //                 callback(ret);
-    //             }
-    //         })
-    // };
+    //todo: template of refactoring all dao functions!!!
+    this.addUser = function (conn, user, callback) {
+        conn.query("INSERT INTO user values(null,'tom','111')",
+            function (err, ret) {
+                if (err) {
+                    console.error(err);
+                    conn.rollback(function () {
+                    });
+                } else {
+                    callback(ret);
+                }
+            })
+    };
+    this.shit = function (conn, user, callback) {
+        conn.query('select *****r', function (err, ret) {
+            if (err) {
+                console.log(err);
+                conn.rollback(function () {
+                    console.log('rollback!');
+                })
+            } else {
+                callback(ret);
+            }
+        })
+    }
 }
 
 function error() {
