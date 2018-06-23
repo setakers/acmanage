@@ -11,6 +11,7 @@ var AsTeacherDao = function () {
                 callback(results);
             }
         });
+        DaoUtil.release(conn);
     }
     this.getAsTeacherByTeacherId = function (teacher_id, callback) {
         var conn = DaoUtil.getConnection();
@@ -21,6 +22,7 @@ var AsTeacherDao = function () {
                 callback(results);
             }
         });
+        DaoUtil.release(conn);
     }
 };
 

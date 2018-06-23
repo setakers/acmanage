@@ -48,8 +48,10 @@ var StudentService = function () {
                         asTeacherDao.getAsTeacherByTeacherId(teach[0]['teacher_id'], function (as_teacher) {
                             userDao.getUserByUserId(as_teacher[0]['user_id'], function (user) {
                                 info.teacher_name = user[0]['user_name'];
+                                // console.log('push! idx= ' + idx);
                                 tableData.push(info);
-                                if (idx >= attends.length - 1) {
+                                if (attends.length === tableData.length) {
+                                    // console.log('callback!');
                                     callback(tableData);
                                 }
                             })
@@ -111,7 +113,7 @@ var StudentService = function () {
                                         classroomDao.getClassroomByClassroomId(exam['classroom_id'], function (classroom) {
                                             tmp1['room_name'] = classroom[0]['room_name'];
                                             tableData.push(tmp1);
-                                            if (idx1 >= exams.length - 1 && idx >= attends.length - 1) {
+                                            if (tableData.length === exams.length * attends.length) {
                                                 callback(tableData);
                                             }
                                         })

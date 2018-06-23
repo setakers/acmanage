@@ -13,8 +13,8 @@ var ScoreQueryService = function () {
     this.getAllScoreQueries = function (callback) {
         var tableData = [];
         scoreQueryDao.getAllScoreQueries(function (score_queries) {
-            console.log('in getAllScoreQueries, score_queries : '+score_queries);
-            score_queries.forEach(function(score_query,idx){
+            console.log('in getAllScoreQueries, score_queries : ' + score_queries);
+            score_queries.forEach(function (score_query, idx) {
                 var tmp = {
                     'teacher_name': null,
                     'student_name': null,
@@ -31,7 +31,7 @@ var ScoreQueryService = function () {
                 tmp['reason'] = score_query['reason'];
                 tmp['state'] = score_query['state'];
                 tmp['query_time'] = score_query['query_time'].toLocaleString();
-                if(score_query['deal_time']!==null)
+                if (score_query['deal_time'] !== null)
                     tmp['deal_time'] = score_query['deal_time'].toLocaleString();
                 courseDao.getCourseByCourseId(score_query['course_id'], function (course) {
                     tmp['course_name'] = course[0]['course_name'];
@@ -42,7 +42,7 @@ var ScoreQueryService = function () {
                                 userDao.getUserByUserId(as_student[0]['user_id'], function (user1) {
                                     tmp['student_name'] = user1[0]['user_name'];
                                     tableData.push(tmp);
-                                    if(idx>=score_queries.length-1){
+                                    if (tableData.length === score_queries.length) {
                                         callback(tableData);
                                     }
                                 })

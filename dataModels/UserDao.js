@@ -1,5 +1,5 @@
 var DaoUtil = require('../util/DaoUtil');
-
+var pool = require('../test/debug');
 
 var UserDao = function () {
     this.findAllUsers = function (callback) {
@@ -77,6 +77,7 @@ var UserDao = function () {
                 }
             }
         });
+        DaoUtil.release(conn);
     }
 
     this.getUserByUserName = function (user_name, callback) {
@@ -89,6 +90,7 @@ var UserDao = function () {
             }
             // console.log(results);
         });
+        DaoUtil.release(conn);
     }
     this.getUserByUserId = function (user_id, callback) {
         var conn = DaoUtil.getConnection();
@@ -100,8 +102,35 @@ var UserDao = function () {
             }
             // console.log(results);
         });
+        DaoUtil.release(conn);
     }
-};
+
+    //todo: template of refactoring all dao functions!!!
+    this.addUser = function (conn, user, callback) {
+        conn.query("INSERT INTO user values(null,'tom','111')",
+            function (err, ret) {
+                if (err) {
+                    console.error(err);
+                    conn.rollback(function () {
+                    });
+                } else {
+                    callback(ret);
+                }
+            })
+    };
+    this.shit = function (conn, user, callback) {
+        conn.query('select *****r', function (err, ret) {
+            if (err) {
+                console.log(err);
+                conn.rollback(function () {
+                    console.log('rollback!');
+                })
+            } else {
+                callback(ret);
+            }
+        })
+    }
+}
 
 function error() {
     console.log("数据库出错!");

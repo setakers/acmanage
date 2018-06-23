@@ -28,7 +28,7 @@ var CourseService = function (userinfo) {
                         console.log(user)
                         tmp.student_name = user[0]['user_name'];
                         tableData.push(tmp);
-                        if (idx >= attends.length - 1) {
+                        if (tableData.length === attends.length) {
                             callback(tableData);
                         }
                     })
