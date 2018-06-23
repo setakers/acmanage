@@ -146,3 +146,15 @@ CREATE TABLE IF NOT EXISTS `select`(
     FOREIGN KEY(student_id) REFERENCES student(student_id),
     PRIMARY KEY(course_id, student_id)
 );
+CREATE TABLE IF NOT EXISTS `open_course`(
+    `open_id` BIGINT AUTO_INCREMENT,
+    `teacher_id` BIGINT,
+    `course_name` VARCHAR(40),
+    `credit` FLOAT,
+    `introduction` VARCHAR(200),
+    `classroom_id` BIGINT,
+    `state` TINYINT, # 0--refused  1--accepted  2--pending
+    FOREIGN KEY(teacher_id) REFERENCES as_teacher(teacher_id),
+    FOREIGN KEY(classroom_id) REFERENCES classroom(classroom_id),
+    PRIMARY KEY(open_id)
+);
