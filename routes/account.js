@@ -14,4 +14,4 @@ router.get('/query_account/:keyword', (req, resp) => {
     }
 );
 
-module.exports =router
+module.exports =router;

@@ -67,6 +67,15 @@ router.get('/stu_of_course/:course_id', (req, resp) => {
     }
 );
 //PUT /api/score/input_score
+router.put('/input_score', (req, resp) => {
+    attendService.markScores(req.body,function (res) {
+        if(res){
+            resp.sendStatus(200);
+        }else{
+            resp.sendStatus(204);
+        }
+    })
+})
 //POST /api/score/add_query_score_change
 router.post('/add_query_score_change', (req, resp) => {
     scoreQueryService.addQueryScoreChange(req.body, function (res) {

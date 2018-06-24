@@ -29,6 +29,27 @@ var AttendDao = function () {
             callback(results);
         });
     }
+
+    this.updateScore = function (conn, attend, callback) {
+        conn.query('update attend set score = ? where course_id = ? and student_id = ?', [attend['score'], attend['course_id'], attend['student_id']], function (error, results, fields) {
+            if (error) {
+                console.error(error);
+                conn.rollback(function () {
+                })
+            }
+            callback(results);
+        });
+    }
+    this.findNullScoresByCourseId = function (conn, course_id, callback) {
+        conn.query('select * from attend where course_id = ' + course_id, function (error, results, fields) {
+            if (error) {
+                console.error(error);
+                conn.rollback(function () {
+                })
+            }
+            callback(results);
+        });
+    }
 };
 
 function error() {
