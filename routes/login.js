@@ -9,6 +9,7 @@ var userService = new UserService();
 var asStudentService = new AsStudentService();
 var asTeacherService = new AsTeacherService();
 router.post('/userinfo', (req, resp) => {
+    console.log('/userinfo');
     var loginAuth = new LoginAuth(req.body.userinfo);
     var send_resp = function (res, resp) {
         var responseJSON = JSON.stringify(res);
@@ -17,6 +18,8 @@ router.post('/userinfo', (req, resp) => {
             .send(responseJSON);
     };
     loginAuth.isAuthorized(function (msg) {
+        console.log('msg: ');
+        console.log(msg);
         if (msg.err) {
             resp.sendStatus(204);
         } else {
@@ -51,6 +54,8 @@ router.post('/userinfo', (req, resp) => {
                             res.teacher_id = as_teacher[0]['teacher_id'];
                             send_resp(res, resp);
                         })
+                    } else if (res.character === 2) {
+                        send_resp(res, resp);
                     }
                 })
 
@@ -60,6 +65,7 @@ router.post('/userinfo', (req, resp) => {
 });
 
 router.get('/auth', (req, res) => {
+    console.log('/auth');
     LoginAuth.isVerifiedAccessToken(req.headers['authorization'], function (msg) {
         if (msg) res.sendStatus(200);
         else res.sendStatus(204);
@@ -68,6 +74,7 @@ router.get('/auth', (req, res) => {
 
 // This stuff checks if username is valid
 router.get('/userquery/:username', (req, resp) => {
+    console.log('/userquery/:username');
     var username = req.params['username'];
     LoginAuth.isUser(username, function (msg) {
         if (!msg.err) {

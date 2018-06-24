@@ -9,7 +9,7 @@ var teacherService = new TeacherService();
 //GET /api/info/stu/:student_id
 router.get('/stu/:student_id', (req, resp) => {
         var student_id = req.params['student_id'];
-        console.log(student_id);
+        // console.log(student_id);
         studentService.getStudentInfoByStudentId(student_id, function (info) {
             var responseJSON = JSON.stringify(info);
             resp.header('Content-Type', 'application/json')

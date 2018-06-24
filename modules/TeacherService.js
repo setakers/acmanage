@@ -86,7 +86,7 @@ var TeacherService = function () {
                         info.college = college[0]['college_name'];
                         teachDao.getTeachByTeacherId(conn,teacher_id, function (teaches) {
                             info.num_of_courses = teaches.length;
-                            console.log(info);
+                            // console.log(info);
                             conn.commit(function () {
                                 callback(info);
                             })
