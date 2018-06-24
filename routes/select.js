@@ -39,7 +39,7 @@ router.get('/selected_status/:student_id', (req, resp) => {
 
 //POST /api/select/select_course`
 router.post('/select_course', (req, resp) => {
-    console.log(req.body);
+    // console.log(req.body);
     selectCourseService.addSelectCourse(req.body, function (res) {
         if (res) {
             resp.sendStatus(200);

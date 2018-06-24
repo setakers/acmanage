@@ -58,10 +58,10 @@ router.post('/userinfo', (req, resp) => {
 });
 //PUT /api/info/changePasswd
 router.put('/changePasswd', (req, resp) => {
-    console.log(req.body);
+    // console.log(req.body);
     var originalString = Buffer.from(req.body['info'], 'base64').toString();
     var tempObject = JSON.parse(originalString);
-    console.log(tempObject);
+    // console.log(tempObject);
     userService.updatePassword(tempObject, function (res) {
         if (res) {
             resp.sendStatus(200);

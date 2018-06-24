@@ -35,8 +35,8 @@ router.get('/stuscore/:student_id', (req, resp) => {
 //GET /api/score/queryexam/:student_id
 router.get('/query_exam/:student_id', (req, resp) => {
     studentService.getExamInfoByStudentId(req.params['student_id'], function (exam_query) {
-        console.log('exam_query');
-        console.log(exam_query);
+        // console.log('exam_query');
+        // console.log(exam_query);
         let responseJson = JSON.stringify({tableData: exam_query})
         resp.header('Content-Type', 'application/json')
             .status(200)
@@ -92,7 +92,7 @@ router.get('/score_change_query', (req, resp) => {
 })
 //PUT /api/score/handle_query
 router.put('/handle_query', (req, resp) => {
-    console.log(req.body);
+    // console.log(req.body);
     scoreQueryService.updateQueryScore(req.body, function (res) {
         if (res) {
             resp.sendStatus(200);

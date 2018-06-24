@@ -90,7 +90,7 @@ var CrossDao = function () {
             '\tselect course_id,course_name,user_name as teacher_name\n' +
             '\tfrom course natural left join teach natural left join as_teacher natural left join user\n' +
             ') as CLS'
-        console.log(sqlquery)
+        // console.log(sqlquery)
         conn.query(sqlquery,
             function(error,results,field){
                 if(error){

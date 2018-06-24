@@ -18,8 +18,8 @@ router.post('/userinfo', (req, resp) => {
             .send(responseJSON);
     };
     loginAuth.isAuthorized(function (msg) {
-        console.log('msg: ');
-        console.log(msg);
+        // console.log('msg: ');
+        // console.log(msg);
         if (msg.err) {
             resp.sendStatus(204);
         } else {
@@ -73,7 +73,7 @@ router.get('/auth', (req, res) => {
 
 // This stuff checks if username is valid
 router.get('/userquery/:username', (req, resp) => {
-    console.log('/userquery/:username');
+    // console.log('/userquery/:username');
     var username = req.params['username'];
     LoginAuth.isUser(username, function (msg) {
         if (!msg.err) {
