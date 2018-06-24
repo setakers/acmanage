@@ -2,10 +2,11 @@ var mysql = require('mysql'),
     Connection = require('mysql/lib/Connection.js');
 
 var ConnPool = mysql.createPool({
-    host: 'localhost',
-    database: 'setakers',
-    user: 'root',
-    password: 'clhclh19971123',
+    host: 'hdm134137468.my3w.com',
+    database: 'hdm134137468_db',
+    user: 'hdm134137468',
+    password: 'clh971123',
+    insecureAuth: true,
     debug: false,
     connectionLimit: 30
 });
