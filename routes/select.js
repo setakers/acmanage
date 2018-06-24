@@ -7,6 +7,8 @@ const StudentService = require('../modules/StudentService')
 let studentService = new StudentService()
 const SelectCourseService = require('../modules/SelectCourseService');
 var selectCourseService = new SelectCourseService();
+const OpenCourseService = require('../modules/OpenCourseService')
+var openCourseService = new OpenCourseService();
 //GET select/query_courses
 router.get('/query_courses', (req, resp) => {
     courseService.getAllCourses(function (course_query) {
@@ -66,7 +68,15 @@ router.get('/free_rooms', (req, resp) => {
     })
 })
 //POST /api/select/open_course`
-
+router.post('/open_course', (req, resp) => {
+    openCourseService.addOpenCourse(req.body, function (res) {
+        if (res) {
+            resp.sendStatus(200);
+        } else {
+            resp.sendStatus(204);
+        }
+    })
+});
 
 //GET select/open_courses_status/:teacher_id`
 router.get('/open_courses_status/:teacher_id', (req, resp) => {
@@ -106,4 +116,13 @@ router.get('/all_open_course', (req, resp) => {
     })
 })
 //PUT select/deal_open_course
+router.put('/deal_open_course', (req, resp) => {
+    openCourseService.dealSelect(req.body, function (res) {
+        if (res) {
+            resp.sendStatus(200);
+        } else {
+            resp.sendStatus(204);
+        }
+    })
+});
 module.exports = router;

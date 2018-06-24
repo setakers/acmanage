@@ -35,6 +35,8 @@ router.get('/stuscore/:student_id', (req, resp) => {
 //GET /api/score/queryexam/:student_id
 router.get('/query_exam/:student_id', (req, resp) => {
     studentService.getExamInfoByStudentId(req.params['student_id'], function (exam_query) {
+        console.log('exam_query');
+        console.log(exam_query);
         let responseJson = JSON.stringify({tableData: exam_query})
         resp.header('Content-Type', 'application/json')
             .status(200)

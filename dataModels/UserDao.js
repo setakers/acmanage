@@ -107,7 +107,7 @@ var UserDao = function () {
         });
     }
     this.getUserByUserId = function (conn, user_id, callback) {
-        console.log('user_id ' + user_id);
+        // console.log('user_id ' + user_id);
         conn.query('SELECT * from user where user_id = \'' + user_id + '\'', function (err, results, fields) {
             if (err) {
                 conn.rollback(function () {
