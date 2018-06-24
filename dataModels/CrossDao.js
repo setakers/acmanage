@@ -1,5 +1,27 @@
 
 var CrossDao = function () {
+    this.getAllOpenCourses = function(conn,callback){
+        let sqlquery =
+            'select open_id,teacher_id,course_name,credit,introduction,classroom_id,teacher_name,room_name\n' +
+            'from (\n' +
+            '\tselect * from open_course \n' +
+            '\twhere state = 2\n' +
+            ')as OPN\n' +
+            'natural join classroom\n' +
+            'natural join (\n' +
+            '\tselect teacher_id,user_name as teacher_name\n' +
+            '\tfrom as_teacher natural join user\n' +
+            ')as TCH'
+        conn.query(sqlquery,
+            function(error,results,field){
+                if(error){
+                    console.error(error)
+                    conn.rollback(function () {})
+                }
+                else
+                    callback(results)
+            })
+    }
     this.getAllSelectCourses = function(conn,callback){
         let sqlquery =
             'select query_id,course_id,student_id,student_name,course_name,teacher_name\n' +

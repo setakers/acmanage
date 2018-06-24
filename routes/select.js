@@ -76,5 +76,13 @@ router.get('/all_select_courses',(req,resp)=>{
 })
 //PUT select/deal_select
 //GET select/all_open_course
+router.get('/all_open_course',(req,resp)=>{
+    courseService.getAllOpenCourses(function(course_query){
+        let responseJson = JSON.stringify({tableData: course_query});
+        resp.header('Content-Type', 'application/json')
+            .status(200)
+            .send(responseJson)
+    })
+})
 //PUT select/deal_open_course
 module.exports = router;
