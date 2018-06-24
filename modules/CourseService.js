@@ -17,6 +17,39 @@ const CrossDao = require('../dataModels/CrossDao')
 let crossDao = new CrossDao()
 
 var CourseService = function (userinfo) {
+    this.modifyCourse =function(new_course,callback){
+        ConnPool.doTrans(function (con) {
+            courseDao.modifyCourse(con,new_course, function (res) {
+                con.commit(function () {
+                    if (res.affectedRows !== 0) {
+                        callback(true);
+                    } else {
+                        callback(false);
+                    }
+                })
+            })
+        })
+    }
+    this.addCourse =function(new_course,callback){
+        ConnPool.doTrans(function (con) {
+            courseDao.addCourse(con,new_course, function (res) {
+                con.commit(function () {
+                    if (res.affectedRows !== 0) {
+                        callback(true);
+                    } else {
+                        callback(false);
+                    }
+                })
+            })
+        })
+    }
+    this.listCourse =function(callback){
+        ConnPool.doTrans(function (con) {
+            courseDao.getCourse(con, function (res) {
+                callback(res);
+            });
+        })
+    }
     this.modifyClassroom =function(new_classroom,callback){
         ConnPool.doTrans(function (con) {
             classroomDao.modifyClassroom(con,new_classroom, function (res) {

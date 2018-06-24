@@ -6,11 +6,7 @@ let userService = new UserService();
 const CourseService = require('../modules/CourseService')
 let courseService = new CourseService();
 //get /api/resource/classrooms
-//post /api/resource/classrooms
-//put /api/resource/classrooms
-
-//get /api/acco/accounts
-router.get('/classroom', (req, resp) => {
+router.get('/classrooms', (req, resp) => {
         courseService.listClassroom(function (classroom_list) {
             let responseJSON = JSON.stringify({tableData: classroom_list});
             resp.header('Content-Type', 'application/json')
@@ -19,8 +15,8 @@ router.get('/classroom', (req, resp) => {
         })
     }
 );
-//put /api/account/accounts
-router.put('/classroom', (req, resp) => {
+//put /api/resource/classrooms
+router.put('/classrooms', (req, resp) => {
     courseService.modifyClassroom(req.body, function (res) {
         if (res) {
             resp.sendStatus(200);
@@ -29,9 +25,40 @@ router.put('/classroom', (req, resp) => {
         }
     })
 });
-//post /api/account/accounts
-router.post('/classroom', (req, resp) => {
+//post /api/resource/classrooms
+router.post('/classrooms', (req, resp) => {
     courseService.addClassroom(req.body, function (res) {
+        if (res) {
+            resp.sendStatus(200);
+        } else {
+            resp.sendStatus(204);
+        }
+    })
+});
+
+//get /api/resource/courses
+router.get('/courses', (req, resp) => {
+        courseService.listCourse(function (classroom_list) {
+            let responseJSON = JSON.stringify({tableData: classroom_list});
+            resp.header('Content-Type', 'application/json')
+                .status(200)
+                .send(responseJSON);
+        })
+    }
+);
+//put /api/resource/courses
+router.put('/courses', (req, resp) => {
+    courseService.modifyCourse(req.body, function (res) {
+        if (res) {
+            resp.sendStatus(200);
+        } else {
+            resp.sendStatus(204);
+        }
+    })
+});
+//post /api/resource/courses
+router.post('/courses', (req, resp) => {
+    courseService.addCourse(req.body, function (res) {
         if (res) {
             resp.sendStatus(200);
         } else {
