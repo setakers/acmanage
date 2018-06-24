@@ -1,5 +1,25 @@
 
 var CrossDao = function () {
+    this.getOpenCoursesByTeacherId = function(conn,teacher_id,callback){
+        let sqlquery =
+            'select course_name,credit,introduction,room_name,state\n' +
+            'from (\n' +
+            '\tselect *\n' +
+            '\tfrom open_course\n' +
+            '\twhere teacher_id = '+ teacher_id +'\n' +
+            ') as A\n' +
+            'natural join classroom'
+        console.log(sqlquery)
+        conn.query(sqlquery,
+            function(error,results,field){
+                if(error){
+                    console.error(error)
+                    conn.rollback(function () {})
+                }
+                else
+                    callback(results)
+            })
+    }
     this.getFreeRooms = function(conn,callback){
         conn.query(
             'select *\n' +

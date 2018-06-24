@@ -57,4 +57,12 @@ router.get('/freerooms',(req,resp)=>{
 
 
 //GET select/open_courses_status/:teacher_id`
+router.get('/open_courses_status/:teacher_id',(req,resp)=>{
+    courseService.getOpenCoursesByTeacherId(req.params['teacher_id'],function(course_query){
+        let responseJson = JSON.stringify({room: room_query});
+        resp.header('Content-Type', 'application/json')
+            .status(200)
+            .send(responseJson)
+    })
+})
 module.exports = router;
