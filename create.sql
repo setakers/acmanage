@@ -142,7 +142,7 @@ CREATE TABLE IF NOT EXISTS `exam`(
 
 
 CREATE TABLE IF NOT EXISTS `select_course`(
-    `query_id` BIGINT AUTO_INCREMENT，
+    `query_id` BIGINT AUTO_INCREMENT,
     `course_id` BIGINT,
     `student_id` BIGINT,
     `state` TINYINT, # 0--refused  1--accepted  2--pending
