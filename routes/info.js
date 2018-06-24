@@ -42,13 +42,33 @@ router.put('/userinfo', (req, resp) => {
             resp.sendStatus(204);
         }
     })
-
 });
 //POST /api/info/userinfo
-//GET /api/info/userinfo
+router.post('/userinfo', (req, resp) => {
+    let userinfo = req.body.userinfo;
+    var originalString = Buffer.from(userinfo, 'base64').toString();
+    var tempObject = JSON.parse(originalString);
+    userService.checkPassword(tempObject, function (rs) {
+        if (rs) {
+            resp.sendStatus(200);
+        } else {
+            resp.sendStatus(204);
+        }
+    })
+});
 //PUT /api/info/changePasswd
 router.put('/changePasswd', (req, resp) => {
-    console.log(req);
+    console.log(req.body);
+    var originalString = Buffer.from(req.body['info'], 'base64').toString();
+    var tempObject = JSON.parse(originalString);
+    console.log(tempObject);
+    userService.updatePassword(tempObject, function (res) {
+        if (res) {
+            resp.sendStatus(200);
+        } else {
+            esp.sendStatus(204);
+        }
+    })
 });
 
 
