@@ -24,7 +24,14 @@ router.get('/selected/:student_id',(req,resp)=>{
     })
 })
 //GET select/selected_status/:student_id`
-
+router.get('/selected_status/:student_id',(req,resp)=>{
+    studentService.getSelectedByStudentId(req.params['student_id'],function(course_query){
+        let responseJson = JSON.stringify({status: course_query});
+        resp.header('Content-Type', 'application/json')
+            .status(200)
+            .send(responseJson)
+    })
+})
 
 //POST /api/select/select_course`
 
