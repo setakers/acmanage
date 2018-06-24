@@ -103,6 +103,55 @@ var UserDao = function () {
         });
     }
 
+    this.updateUserNameByUserId=function (conn, user, callback) {
+        conn.query('update user set user_name = ? where user_id = ?',[user['user_name'],user['user_id']], function (err, results, fields) {
+            if (err) {
+                conn.rollback(function () {
+                    console.log(err);
+                })
+            } else {
+                callback(results);
+            }
+            // console.log(results);
+        });
+    }
+    this.updateGenderByUserId=function (conn, user, callback) {
+        conn.query('update user set gender = ? where user_id = ?',[user['gender'],user['user_id']], function (err, results, fields) {
+            if (err) {
+                conn.rollback(function () {
+                    console.log(err);
+                })
+            } else {
+                callback(results);
+            }
+            // console.log(results);
+        });
+    }
+    this.updateEmailByUserId=function (conn, user, callback) {
+        conn.query('update user set email = ? where user_id = ?',[user['email'],user['user_id']], function (err, results, fields) {
+            if (err) {
+                conn.rollback(function () {
+                    console.log(err);
+                })
+            } else {
+                callback(results);
+            }
+            // console.log(results);
+        });
+    }
+    this.updatePhoneByUserId=function (conn, user, callback) {
+        conn.query('update user set phone = ? where user_id = ?',[user['phone'],user['user_id']], function (err, results, fields) {
+            if (err) {
+                conn.rollback(function () {
+                    console.log(err);
+                })
+            } else {
+                callback(results);
+            }
+            // console.log(results);
+        });
+    }
+
     // //todo: template of refactoring all dao functions!!!
     // this.addUser = function (conn, user, callback) {
     //     conn.query("INSERT INTO user values(null,'tom','111')",

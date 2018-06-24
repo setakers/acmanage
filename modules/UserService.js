@@ -15,6 +15,41 @@ var UserService = function () {
             });
         })
     }
+    this.updateUser = function (user, callback) {
+        ConnPool.doTrans(function (conn) {
+            userDao.updateUserNameByUserId(conn, user, function (res) {
+                userDao.updateGenderByUserId(conn, user, function (res) {
+                    if (user['email'] !== '') {
+                        userDao.updateEmailByUserId(conn, user, function (res) {
+                            if (user['phone'] !== '') {
+                                userDao.updatePhoneByUserId(conn, user, function (res) {
+                                    conn.commit(function () {
+                                        callback(true);
+                                    })
+                                })
+                            }else{
+                                conn.commit(function () {
+                                    callback(true);
+                                })
+                            }
+                        })
+                    } else {
+                        if (user['phone'] !== '') {
+                            userDao.updatePhoneByUserId(conn, user, function (res) {
+                                conn.commit(function () {
+                                    callback(true);
+                                })
+                            })
+                        }else{
+                            conn.commit(function () {
+                                callback(true);
+                            })
+                        }
+                    }
+                })
+            })
+        })
+    }
 };
 
 
