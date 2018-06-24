@@ -8,6 +8,13 @@ const clone = require('../util/utils');
 
 var userDao = new UserDao();
 var UserService = function () {
+    this.searchUser = function (keyword, callback) {
+        ConnPool.doTrans(function (con) {
+            userDao.searchUser(con, keyword, function (res) {
+                callback(res);
+            });
+        })
+    }
     this.getUserByUsername = function (user_name, callback) {
         ConnPool.doTrans(function (con) {
             userDao.getUserByUserName(con, user_name, function (res) {

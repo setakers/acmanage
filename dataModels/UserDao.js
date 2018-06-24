@@ -1,6 +1,22 @@
 var pool = require('../test/debug');
 
 var UserDao = function () {
+    this.searchUser = function(conn,keyword,callback){
+        conn.query(
+            'select user_id,user_name,`character`,gender,email,phone\n' +
+            'from user\n' +
+            'where user_name like "%'+keyword+'%"\n' +
+            'or email like "%'+keyword+'%"\n' +
+            'or phone like "%'+keyword+'%"',
+            function(error,results,field){
+                if(error){
+                    console.error(error)
+                    conn.rollback(function () {})
+                }
+                else
+                    callback(results)
+            })
+    }
     this.findAllUsers = function (conn, callback) {
         conn.query('SELECT * from user', function (error, results, fields) {
             if (error) {
