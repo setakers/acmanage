@@ -1,5 +1,23 @@
 
 var CrossDao = function () {
+    this.searchCourses = function(conn,keyword,callback){
+        conn.query(
+            'select course_id,course_name,room_name,credit,introduction,state\n' +
+            'from (\n' +
+            '\tselect *\n' +
+            '    from course\n' +
+            '    where course_name like "%'+ keyword +'%"\n' +
+            ') as tmp \n' +
+            'natural join classroom',
+            function(error,results,field){
+                if(error){
+                    console.error(error)
+                    conn.rollback(function () {})
+                }
+                else
+                    callback(results)
+            })
+    }
     this.getSelectedByStudentId = function(conn,student_id,callback){
         conn.query(
             'select course_id,course_name,room_name,credit,introduction,state\n' +

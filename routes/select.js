@@ -36,7 +36,14 @@ router.get('/selected_status/:student_id',(req,resp)=>{
 //POST /api/select/select_course`
 
 //GET /api/select/search/:keyword
-
+router.get('/search/:keyword',(req,resp)=>{
+    courseService.searchCourses(req.params['keyword'],function(course_query){
+        let responseJson = JSON.stringify({results: course_query});
+        resp.header('Content-Type', 'application/json')
+            .status(200)
+            .send(responseJson)
+    })
+})
 //GET /api/select/freerooms
 
 

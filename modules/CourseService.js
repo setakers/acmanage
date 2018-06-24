@@ -13,8 +13,19 @@ const CourseDao = require('../dataModels/CourseDao')
 let courseDao = new CourseDao()
 const ClassroomDao = require('../dataModels/ClassroomDao')
 let classroomDao = new ClassroomDao()
+const CrossDao = require('../dataModels/CrossDao')
+let crossDao = new CrossDao()
 
 var CourseService = function (userinfo) {
+    this.searchCourses = function (keyword, callback) {
+        ConnPool.doTrans(function (con) {
+            crossDao.searchCourses(con,keyword,function(courses){
+                con.commit(function(){
+                    callback(courses)
+                })
+            })
+        })
+    }
     this.getAllCourses = function(callback){
         let return_value = []
         ConnPool.doTrans(function(con){
