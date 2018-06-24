@@ -32,6 +32,7 @@ app.use(config.getApiPath('info'), route.info);
 app.use(config.getApiPath('score'), route.score);
 app.use(config.getApiPath('select'), route.select);
 app.use(config.getApiPath('account'), route.account);
+app.use(config.getApiPath('resource'), route.resource);
 
 
 // Error handling
