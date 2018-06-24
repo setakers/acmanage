@@ -5,6 +5,15 @@ const UserService = require('../modules/UserService')
 let userService = new UserService();
 const CourseService = require('../modules/CourseService')
 let courseService = new CourseService();
+router.get('/valid_classroom/:room_name', (req, resp) => {
+        courseService.checkValidClassroom(req.params['room_name'],function(res) {
+            if(res)
+                resp.sendStatus(200);
+            else
+                resp.sendStatus(204);
+        })
+    }
+);
 //get /api/resource/classrooms
 router.get('/classrooms', (req, resp) => {
         courseService.listClassroom(function (classroom_list) {

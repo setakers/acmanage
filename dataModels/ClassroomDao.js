@@ -18,11 +18,14 @@ var ClassroomDao = function () {
             [new_classroom['room_name'],new_classroom['capacity']],
             function (error, results, fields) {
                 if (error) {
+                    console.error("ERRRRRRRRRRRRRRRRRRRRRRROR");
                     console.error(error);
+                    callback(null)
                     conn.rollback(function () {
                     })
                 }
-                callback(results);
+                else
+                    callback(results);
             });
     }
     this.listClassroom = function(conn,callback){
@@ -36,6 +39,16 @@ var ClassroomDao = function () {
                 else
                     callback(results)
             })
+    }
+    this.getClassroomByRoomname = function (conn,room_name, callback) {
+        conn.query('SELECT * from classroom where room_name = \'' + room_name + '\'', function (err, results, fields) {
+            if (err) {
+                console.error(error)
+                conn.rollback(function () {})
+            }else {
+                callback(results);
+            }
+        })
     }
     this.getClassroomByClassroomId = function (conn,classroom_id, callback) {
         conn.query('SELECT * from classroom where classroom_id = \'' + classroom_id + '\'', function (err, results, fields) {

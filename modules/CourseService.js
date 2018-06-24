@@ -50,6 +50,18 @@ var CourseService = function (userinfo) {
             });
         })
     }
+    this.checkValidClassroom = function(room_name,callback){
+        ConnPool.doTrans(function (con) {
+            classroomDao.getClassroomByRoomname(con,room_name, function (res) {
+                con.commit(function () {
+                    if(res.length !== 0)
+                        callback(false)
+                    else
+                        callback(true)
+                })
+            })
+        })
+    }
     this.modifyClassroom =function(new_classroom,callback){
         ConnPool.doTrans(function (con) {
             classroomDao.modifyClassroom(con,new_classroom, function (res) {
@@ -66,13 +78,19 @@ var CourseService = function (userinfo) {
     this.addClassroom =function(new_classroom,callback){
         ConnPool.doTrans(function (con) {
             classroomDao.addClassroom(con,new_classroom, function (res) {
-                con.commit(function () {
-                    if (res.affectedRows !== 0) {
-                        callback(true);
-                    } else {
-                        callback(false);
-                    }
-                })
+                console.log("addddddd")
+                if(res === null)
+                    callback(false)
+                else
+                    con.commit(function () {
+                        console.log("commmmmm")
+                        console.log(res.affectedRows)
+                        if (res.affectedRows !== 0) {
+                            callback(true);
+                        } else {
+                            callback(false);
+                        }
+                    })
             })
         })
     }
