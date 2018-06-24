@@ -8,6 +8,39 @@ const clone = require('../util/utils');
 
 var userDao = new UserDao();
 var UserService = function () {
+    this.modifyAccount =function(new_info,callback){
+        ConnPool.doTrans(function (con) {
+            userDao.modifyAccount(con,new_info, function (res) {
+                con.commit(function () {
+                    if (res.affectedRows !== 0) {
+                        callback(true);
+                    } else {
+                        callback(false);
+                    }
+                })
+            })
+        })
+    }
+    this.addAccount =function(new_account,callback){
+        ConnPool.doTrans(function (con) {
+            userDao.addAccount(con,new_account, function (res) {
+                con.commit(function () {
+                    if (res.affectedRows !== 0) {
+                        callback(true);
+                    } else {
+                        callback(false);
+                    }
+                })
+            })
+        })
+    }
+    this.listAccount =function(callback){
+        ConnPool.doTrans(function (con) {
+            userDao.listAccount(con, function (res) {
+                callback(res);
+            });
+        })
+    }
     this.searchUser = function (keyword, callback) {
         ConnPool.doTrans(function (con) {
             userDao.searchUser(con, keyword, function (res) {
