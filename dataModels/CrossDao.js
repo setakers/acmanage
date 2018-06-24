@@ -1,5 +1,32 @@
 
 var CrossDao = function () {
+    this.getAllSelectCourses = function(conn,callback){
+        let sqlquery =
+            'select query_id,course_id,student_id,student_name,course_name,teacher_name\n' +
+            'from (\n' +
+            '\tselect *\n' +
+            '\tfrom select_course\n' +
+            '\twhere state = 2\n' +
+            ') as QRY\n' +
+            'natural join(\n' +
+            '\tselect student_id, user_name as student_name\n' +
+            '\tfrom as_student natural join user\n' +
+            ') as STU\n' +
+            'natural join(\n' +
+            '\tselect course_id,course_name,user_name as teacher_name\n' +
+            '\tfrom course natural join teach natural join as_teacher natural join user\n' +
+            ') as CLS'
+        console.log(sqlquery)
+        conn.query(sqlquery,
+            function(error,results,field){
+                if(error){
+                    console.error(error)
+                    conn.rollback(function () {})
+                }
+                else
+                    callback(results)
+            })
+    }
     this.getOpenCoursesByTeacherId = function(conn,teacher_id,callback){
         let sqlquery =
             'select course_name,credit,introduction,room_name,state\n' +
@@ -9,7 +36,6 @@ var CrossDao = function () {
             '\twhere teacher_id = '+ teacher_id +'\n' +
             ') as A\n' +
             'natural join classroom'
-        console.log(sqlquery)
         conn.query(sqlquery,
             function(error,results,field){
                 if(error){
@@ -61,7 +87,7 @@ var CrossDao = function () {
             'select course_id,course_name,room_name,credit,introduction,state\n' +
             'from (\n' +
             '\tselect course_id\n' +
-            '    from `select`\n' +
+            '    from select_course\n' +
             '    where student_id = ' + student_id +
             ') as tmp \n' +
             'natural join course\n' +

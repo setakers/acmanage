@@ -59,10 +59,22 @@ router.get('/freerooms',(req,resp)=>{
 //GET select/open_courses_status/:teacher_id`
 router.get('/open_courses_status/:teacher_id',(req,resp)=>{
     courseService.getOpenCoursesByTeacherId(req.params['teacher_id'],function(course_query){
-        let responseJson = JSON.stringify({room: room_query});
+        let responseJson = JSON.stringify({open_courses: course_query});
         resp.header('Content-Type', 'application/json')
             .status(200)
             .send(responseJson)
     })
 })
+//GET select/all_select_courses
+router.get('/all_select_courses',(req,resp)=>{
+    courseService.getAllSelectCourses(function(select_query){
+        let responseJson = JSON.stringify({tableData: select_query});
+        resp.header('Content-Type', 'application/json')
+            .status(200)
+            .send(responseJson)
+    })
+})
+//PUT select/deal_select
+//GET select/all_open_course
+//PUT select/deal_open_course
 module.exports = router;

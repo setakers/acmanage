@@ -17,6 +17,7 @@ var ScoreQueryService = function () {
             scoreQueryDao.getAllScoreQueries(con, function (score_queries) {
                 score_queries.forEach(function (score_query, idx) {
                     var tmp = {
+                        'course_id':null,
                         'teacher_name': null,
                         'student_name': null,
                         'course_name': null,
@@ -27,6 +28,7 @@ var ScoreQueryService = function () {
                         'query_time': null,
                         'deal_time': null,
                     };
+                    tmp['course_id'] = score_query['course_id']
                     tmp['old_score'] = score_query['old_score'];
                     tmp['new_score'] = score_query['new_score'];
                     tmp['reason'] = score_query['reason'];
