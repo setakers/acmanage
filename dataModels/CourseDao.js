@@ -22,7 +22,8 @@ var CourseDao = function () {
         });
     }
     this.addCourse = function (conn, course, callback) {
-        conn.query('insert into course (course_name, credit, introduction, state, classroom_id', [course['course_name'], course['credit'], course['introduction'], course['state'], course['classroom_id'],], function (error, results, fields) {
+        console.log(course);
+        conn.query('insert into course (course_name, credit, introduction, state, classroom_id) values(?,?,?,?,?)', [course['course_name'], course['credit'], course['introduction'], course['state'], course['classroom_id'],], function (error, results, fields) {
             if (error) {
                 console.error(error)
                 conn.rollback(function () {
