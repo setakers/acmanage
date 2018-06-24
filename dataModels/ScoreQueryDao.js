@@ -1,33 +1,47 @@
-
-
 var ScoreQueryDao = function () {
-    this.getAllScoreQueries = function (conn,callback) {
+    this.getAllScoreQueries = function (conn, callback) {
         conn.query('SELECT * from score_query ', function (err, results, fields) {
-            if(err){
+            if (err) {
                 console.error(error)
-                conn.rollback(function () {})
-            }else{
+                conn.rollback(function () {
+                })
+            } else {
                 callback(results);
             }
         });
     }
-    this.getUnhandledScoreQueries = function (conn,callback) {
+    this.getUnhandledScoreQueries = function (conn, callback) {
         conn.query('SELECT * from score_query where state = 2', function (err, results, fields) {
-            if(err){
+            if (err) {
                 console.error(error)
-                conn.rollback(function () {})
-            }else{
+                conn.rollback(function () {
+                })
+            } else {
                 callback(results);
             }
         });
     }
 
-    this.addScoreQuery=function (conn, score_query, callback) {
-        conn.query('insert into score_query(teacher_id,student_id,course_id,old_score,new_score,reason,state) values(?,?,?,?,?,?,?)',[score_query['teacher_id'],score_query['student_id'],score_query['course_id'],score_query['old_score'],score_query['new_score'],score_query['reason'],score_query['state']], function (err, results, fields) {
-            if(err){
+    this.addScoreQuery = function (conn, score_query, callback) {
+        conn.query('insert into score_query(teacher_id,student_id,course_id,old_score,new_score,reason,state) values(?,?,?,?,?,?,?)', [score_query['teacher_id'], score_query['student_id'], score_query['course_id'], score_query['old_score'], score_query['new_score'], score_query['reason'], score_query['state']], function (err, results, fields) {
+            if (err) {
                 console.error(error);
-                conn.rollback(function () {})
-            }else{
+                conn.rollback(function () {
+                })
+            } else {
+                callback(results);
+            }
+        });
+    }
+
+    this.updateState = function (conn, score_query, callback) {
+        // console.log(score_query);
+        conn.query('update score_query set state = ?, deal_time = current_timestamp()  where query_id = ?', [score_query['state'], score_query['query_id']], function (err, results, fields) {
+            if (err) {
+                console.error(error);
+                conn.rollback(function () {
+                })
+            } else {
                 callback(results);
             }
         });

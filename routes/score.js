@@ -89,4 +89,14 @@ router.get('/score_change_query', (req, resp) => {
     })
 })
 //PUT /api/score/handle_query
+router.put('/handle_query', (req, resp) => {
+    console.log(req.body);
+    scoreQueryService.updateQueryScore(req.body, function (res) {
+        if (res) {
+            resp.sendStatus(200);
+        } else {
+            resp.sendStatus(204);
+        }
+    })
+});
 module.exports = router;
