@@ -1,20 +1,13 @@
-// const AttendService=require('../modules/AttendService')
-// var attendService=new AttendService();
-// var body={
-//     course_id:  2,
-//     scores:  [
-//         {
-//             student_id: 1,
-//             student_name: 'xxx',
-//             score: 12,
-//         },
-//         {
-//             student_id: 3,
-//             student_name: 'xxx',
-//             score: 34,
-//         },
-//     ]
-// }
-// attendService.markScores(body,function (res) {
-//     console.log(res);
-// })
+// var mysql = require('mysql');
+// var connection = mysql.createConnection({
+//     host: 'localhost',
+//     user: 'root',
+//     password: 'clhclh19971123',
+//     database: 'hdm134137468_db'
+// });
+//
+// connection.connect();
+//
+// connectiaon.query('update score_query set state = 1, deal_time = CURRENT_TIME where query_id=4', function (error, results, fields) {
+//     console.log(results);
+// });

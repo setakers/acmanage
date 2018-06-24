@@ -98,9 +98,13 @@ var ScoreQueryService = function () {
         ConnPool.doTrans(function (conn) {
             scoreQueryDao.updateState(conn, data, function (res) {
                 if (res.affectedRows !== 0) {
-                    callback(true);
+                    conn.commit(function () {
+                        callback(true);
+                    })
                 } else {
-                    callback(false);
+                    conn.commit(function () {
+                        callback(false);
+                    })
                 }
             })
         })

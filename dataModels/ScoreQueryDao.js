@@ -35,10 +35,9 @@ var ScoreQueryDao = function () {
     }
 
     this.updateState = function (conn, score_query, callback) {
-        console.log(score_query);
-        //todo:there is a bug here....
-        var query='update score_query set state = ' + score_query['state'] + ', deal_time = NOW() where query_id = ' + score_query['query_id'] + '';
-        console.log(query);
+        // console.log(score_query);
+        var query = 'update score_query set state = ' + score_query['state'] + ', deal_time = NOW() where query_id = ' + score_query['query_id'] + '';
+        // console.log(query);
         conn.query(query, function (err, results, fields) {
             if (err) {
                 console.error(error);
