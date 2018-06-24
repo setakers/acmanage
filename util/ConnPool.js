@@ -42,7 +42,7 @@ function transAutoRelease(conn) {
     function release() {
         if (conn) {
             conn.release();
-            console.log('release!');
+            // console.log('release!');
         }
     }
 }

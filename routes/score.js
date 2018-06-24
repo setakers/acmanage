@@ -57,11 +57,9 @@ router.get('/teach_courses/:teacher_id', (req, resp) => {
 
 //GET /api/score/stu_of_course/:course_id
 router.get('/stu_of_course/:course_id', (req, resp) => {
-
         let course_id = req.params['course_id'];
         courseService.getStudentsOfCourseByCourseId(course_id, function (attends) {
             let responseJSON = JSON.stringify({'students': Array.from(attends)});
-            // console.log(responseJSON);
             resp.header('Content-Type', 'application/json')
                 .status(200)
                 .send(responseJSON);
