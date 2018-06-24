@@ -9,56 +9,17 @@ const ConnPool = require('../util/ConnPool');
 var userDao = new UserDao();
 var asStudentDao = new AsStudentDao();
 var courseDao = new CourseDao();
-
+const CrossDao  = require('../dataModels/CrossDao')
+let crossDao = new CrossDao()
 var ScoreQueryService = function () {
-    this.getAllScoreQueries = function (callback) {
-        var tableData = [];
+    this.getAllScoreQueries= function (callback) {
         ConnPool.doTrans(function (con) {
-            scoreQueryDao.getAllScoreQueries(con, function (score_queries) {
-                score_queries.forEach(function (score_query, idx) {
-                    var tmp = {
-                        'course_id':null,
-                        'teacher_name': null,
-                        'student_name': null,
-                        'course_name': null,
-                        'old_score': null,
-                        'new_score': null,
-                        'reason': null,
-                        'state': null,
-                        'query_time': null,
-                        'deal_time': null,
-                    };
-                    tmp['course_id'] = score_query['course_id']
-                    tmp['old_score'] = score_query['old_score'];
-                    tmp['new_score'] = score_query['new_score'];
-                    tmp['reason'] = score_query['reason'];
-                    tmp['state'] = score_query['state'];
-                    tmp['query_time'] = score_query['query_time'].toLocaleString();
-                    if (score_query['deal_time'] !== null)
-                        tmp['deal_time'] = score_query['deal_time'].toLocaleString();
-                    courseDao.getCourseByCourseId(con, score_query['course_id'], function (course) {
-                        tmp['course_name'] = course[0]['course_name'];
-                        asTeacherDao.getAsTeacherByTeacherId(con, score_query['teacher_id'], function (as_teacher) {
-                            userDao.getUserByUserId(con, as_teacher[0]['user_id'], function (user) {
-                                tmp['teacher_name'] = user[0]['user_name'];
-                                asStudentDao.getAsStudentByStudentId(con, score_query['student_id'], function (as_student) {
-                                    userDao.getUserByUserId(con, as_student[0]['user_id'], function (user1) {
-                                        tmp['student_name'] = user1[0]['user_name'];
-                                        tableData.push(tmp);
-                                        if (tableData.length === score_queries.length) {
-                                            con.commit(function () {
-                                                callback(tableData);
-                                            })
-                                        }
-                                    })
-                                })
-                            })
-                        })
-                    })
+            crossDao.getAllScoreQueries(con,function(courses){
+                con.commit(function(){
+                    callback(courses)
                 })
             })
         })
-
     }
 
     this.getUnhandledScoreQueries = function (callback) {
