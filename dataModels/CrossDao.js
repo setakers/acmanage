@@ -3,14 +3,18 @@ var CrossDao = function () {
     this.getAllScoreQueries = function(conn,callback){
         let sqlquery =
             'select *\n' +
-            'from score_query inner join course on score_query.course_id = course.course_id\n' +
-            'natural join (\n' +
+            'from score_query \n' +
+            'natural left join(\n' +
+            '\tselect course_id,course_name\n' +
+            '\tfrom course\n' +
+            ')as CRS\n' +
+            'natural left join (\n' +
             '\tselect teacher_id,user_name as teacher_name\n' +
-            '\tfrom as_teacher natural join user\n' +
+            '\tfrom as_teacher natural left join user\n' +
             ')as TCH\n' +
-            'natural join (\n' +
+            'natural left join (\n' +
             '\tselect student_id,user_name as student_name\n' +
-            '\tfrom as_student natural join user\n' +
+            '\tfrom as_student natural left join user\n' +
             ')as STD'
         conn.query(sqlquery,
             function(error,results,field){
@@ -29,10 +33,10 @@ var CrossDao = function () {
             '\tselect * from open_course \n' +
             '\twhere state = 2\n' +
             ')as OPN\n' +
-            'natural join classroom\n' +
-            'natural join (\n' +
+            'natural left join classroom\n' +
+            'natural left join (\n' +
             '\tselect teacher_id,user_name as teacher_name\n' +
-            '\tfrom as_teacher natural join user\n' +
+            '\tfrom as_teacher natural left join user\n' +
             ')as TCH'
         conn.query(sqlquery,
             function(error,results,field){
@@ -52,13 +56,13 @@ var CrossDao = function () {
             '\tfrom select_course\n' +
             '\twhere state = 2\n' +
             ') as QRY\n' +
-            'natural join(\n' +
+            'natural left join(\n' +
             '\tselect student_id, user_name as student_name\n' +
-            '\tfrom as_student natural join user\n' +
+            '\tfrom as_student natural left join user\n' +
             ') as STU\n' +
-            'natural join(\n' +
+            'natural left join(\n' +
             '\tselect course_id,course_name,user_name as teacher_name\n' +
-            '\tfrom course natural join teach natural join as_teacher natural join user\n' +
+            '\tfrom course natural left join teach natural left join as_teacher natural left join user\n' +
             ') as CLS'
         console.log(sqlquery)
         conn.query(sqlquery,
@@ -79,7 +83,7 @@ var CrossDao = function () {
             '\tfrom open_course\n' +
             '\twhere teacher_id = '+ teacher_id +'\n' +
             ') as A\n' +
-            'natural join classroom'
+            'natural left join classroom'
         conn.query(sqlquery,
             function(error,results,field){
                 if(error){
@@ -116,7 +120,7 @@ var CrossDao = function () {
             '    from course\n' +
             '    where course_name like "%'+ keyword +'%"\n' +
             ') as tmp \n' +
-            'natural join classroom',
+            'natural left join classroom',
             function(error,results,field){
                 if(error){
                     console.error(error)
@@ -134,8 +138,8 @@ var CrossDao = function () {
             '    from select_course\n' +
             '    where student_id = ' + student_id +
             ') as tmp \n' +
-            'natural join course\n' +
-            'natural join classroom',
+            'natural left join course\n' +
+            'natural left join classroom',
             function(error,results,field){
                 if(error){
                     console.error(error)
@@ -148,7 +152,7 @@ var CrossDao = function () {
     this.getCoursesByStudentId = function(conn,student_id,callback){
         conn.query(
             'select course_id,course_name,room_name,credit,introduction ' +
-            'from course natural join classroom ' +
+            'from course natural left join classroom ' +
             'where course_id in ( ' +
             'select course_id ' +
             'from attend ' +
