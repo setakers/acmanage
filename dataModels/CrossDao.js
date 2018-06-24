@@ -134,11 +134,11 @@ var CrossDao = function () {
         conn.query(
             'select course_id,course_name,room_name,credit,introduction,state\n' +
             'from (\n' +
-            '\tselect course_id\n' +
+            '\tselect course_id,state\n' +
             '    from select_course\n' +
             '    where student_id = ' + student_id +
             ') as tmp \n' +
-            'natural left join course\n' +
+            'natural left join (select course_id,course_name,classroom_id,credit,introduction from course) as CRS\n' +
             'natural left join classroom',
             function(error,results,field){
                 if(error){
