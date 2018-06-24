@@ -13,6 +13,17 @@ router.get('/query_account/:keyword', (req, resp) => {
         })
     }
 );
+//account/valid_account/:account
+router.get('/valid_account/:account', (req, resp) => {
+        userService.checkValidAccount(req.params['account'],function(res) {
+            if(res)
+                resp.sendStatus(200);
+            else
+                resp.sendStatus(204);
+        })
+    }
+);
+
 //get /api/account/accounts
 router.get('/accounts', (req, resp) => {
         userService.listAccount(function (user_query) {

@@ -8,6 +8,19 @@ const clone = require('../util/utils');
 
 var userDao = new UserDao();
 var UserService = function () {
+
+    this.checkValidAccount = function(user_name,callback){
+        ConnPool.doTrans(function (con) {
+            userDao.getUserByUserName(con,user_name, function (res) {
+                con.commit(function () {
+                    if(res.length !== 0)
+                        callback(false)
+                    else
+                        callback(true)
+                })
+            })
+        })
+    }
     this.modifyAccount =function(new_info,callback){
         ConnPool.doTrans(function (con) {
             userDao.modifyAccount(con,new_info, function (res) {
