@@ -105,6 +105,7 @@ var ScoreQueryService = function () {
             })
         })
     }
+
 };
 
 
