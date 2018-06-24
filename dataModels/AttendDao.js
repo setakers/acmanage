@@ -41,7 +41,7 @@ var AttendDao = function () {
         });
     }
     this.findNullScoresByCourseId = function (conn, course_id, callback) {
-        conn.query('select * from attend where course_id = ' + course_id, function (error, results, fields) {
+        conn.query('select * from attend where course_id = ' + course_id + ' and score is null ', function (error, results, fields) {
             if (error) {
                 console.error(error);
                 conn.rollback(function () {
