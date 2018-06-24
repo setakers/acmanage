@@ -17,6 +17,15 @@ const CrossDao = require('../dataModels/CrossDao')
 let crossDao = new CrossDao()
 
 var CourseService = function (userinfo) {
+    this.getAllSelectCourses= function (callback) {
+        ConnPool.doTrans(function (con) {
+            crossDao.getAllSelectCourses(con,function(courses){
+                con.commit(function(){
+                    callback(courses)
+                })
+            })
+        })
+    }
     this.getOpenCoursesByTeacherId= function (teacher_id,callback) {
         ConnPool.doTrans(function (con) {
             crossDao.getOpenCoursesByTeacherId(con,teacher_id,function(courses){
