@@ -94,7 +94,7 @@ var ScoreQueryService = function () {
                                     userDao.getUserByUserId(as_student[0]['user_id'], function (user1) {
                                         tmp['student_name'] = user1[0]['user_name'];
                                         tableData.push(tmp);
-                                        if (idx >= score_queries.length - 1) {
+                                        if (tableData.length >= score_queries.length ) {
                                             callback(tableData);
                                         }
                                     })
@@ -160,6 +160,20 @@ var ScoreQueryService = function () {
             })
         })
 
+    }
+
+    this.addQueryScoreChange = function (data, callback) {
+        ConnPool.doTrans(function (conn) {
+            scoreQueryDao.addScoreQuery(conn, data, function (res) {
+                conn.commit(function () {
+                    if(res.affectedRows!==0){
+                        callback(true);
+                    }else{
+                        callback(false);
+                    }
+                })
+            })
+        })
     }
 };
 

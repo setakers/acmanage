@@ -21,6 +21,17 @@ var ScoreQueryDao = function () {
             }
         });
     }
+
+    this.addScoreQuery=function (conn, score_query, callback) {
+        conn.query('insert into score_query(teacher_id,student_id,course_id,old_score,new_score,reason,state) values(?,?,?,?,?,?,?)',[score_query['teacher_id'],score_query['student_id'],score_query['course_id'],score_query['old_score'],score_query['new_score'],score_query['reason'],score_query['state']], function (err, results, fields) {
+            if(err){
+                console.error(error);
+                conn.rollback(function () {})
+            }else{
+                callback(results);
+            }
+        });
+    }
 };
 
 function error() {

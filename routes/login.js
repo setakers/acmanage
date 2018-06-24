@@ -58,14 +58,13 @@ router.post('/userinfo', (req, resp) => {
                         send_resp(res, resp);
                     }
                 })
-
             });
         }
     })
 });
 
 router.get('/auth', (req, res) => {
-    console.log('/auth');
+    // console.log('/auth');
     LoginAuth.isVerifiedAccessToken(req.headers['authorization'], function (msg) {
         if (msg) res.sendStatus(200);
         else res.sendStatus(204);
