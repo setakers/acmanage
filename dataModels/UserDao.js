@@ -1,7 +1,7 @@
 var pool = require('../test/debug');
 
 var UserDao = function () {
-    this.findAllUsers = function (conn,callback) {
+    this.findAllUsers = function (conn, callback) {
         conn.query('SELECT * from user', function (error, results, fields) {
             if (error) {
                 conn.rollback(function () {
@@ -21,7 +21,7 @@ var UserDao = function () {
         }
     }
 
-    this.isValidUsername = function (conn,user_name, callback) {
+    this.isValidUsername = function (conn, user_name, callback) {
         // console.log('UserDao.isValidUsername');
         if (typeof user_name !== 'string') {
             callback(error());
@@ -38,7 +38,7 @@ var UserDao = function () {
             // console.log(results);
         });
     };
-    this.isValidUsernameAndPassword = function (conn,user_name, password, callback) {
+    this.isValidUsernameAndPassword = function (conn, user_name, password, callback) {
         if (typeof user_name !== 'string' || typeof password !== 'string') {
             callback(error());
         }
@@ -53,7 +53,7 @@ var UserDao = function () {
             }
         });
     };
-    this.getRoleByUsername = function (conn,user_name, callback) {
+    this.getRoleByUsername = function (conn, user_name, callback) {
         conn.query('SELECT * from user where user_name = \'' + user_name + '\'', function (err, results, fields) {
             if (err) {
                 conn.rollback(function () {
@@ -77,7 +77,7 @@ var UserDao = function () {
         });
     }
 
-    this.getUserByUserName = function (conn,user_name, callback) {
+    this.getUserByUserName = function (conn, user_name, callback) {
         conn.query('SELECT * from user where user_name = \'' + user_name + '\'', function (err, results, fields) {
             if (err) {
                 console.log(err);
@@ -90,21 +90,22 @@ var UserDao = function () {
             // console.log(results);
         });
     }
-    this.getUserByUserId = function (conn,user_id, callback) {
+    this.getUserByUserId = function (conn, user_id, callback) {
+        console.log('user_id ' + user_id);
         conn.query('SELECT * from user where user_id = \'' + user_id + '\'', function (err, results, fields) {
             if (err) {
                 conn.rollback(function () {
+                    console.log(err);
+                })
+            } else {
+                callback(results);
+            }
+            // console.log(results);
+        });
+    }
 
-                })
-            } else {
-                callback(results);
-            }
-            // console.log(results);
-        });
-    }
-
-    this.updateUserNameByUserId=function (conn, user, callback) {
-        conn.query('update user set user_name = ? where user_id = ?',[user['user_name'],user['user_id']], function (err, results, fields) {
+    this.updateUserNameByUserId = function (conn, user, callback) {
+        conn.query('update user set user_name = ? where user_id = ?', [user['user_name'], user['user_id']], function (err, results, fields) {
             if (err) {
                 conn.rollback(function () {
                     console.log(err);
@@ -115,8 +116,8 @@ var UserDao = function () {
             // console.log(results);
         });
     }
-    this.updateGenderByUserId=function (conn, user, callback) {
-        conn.query('update user set gender = ? where user_id = ?',[user['gender'],user['user_id']], function (err, results, fields) {
+    this.updateGenderByUserId = function (conn, user, callback) {
+        conn.query('update user set gender = ? where user_id = ?', [user['gender'], user['user_id']], function (err, results, fields) {
             if (err) {
                 conn.rollback(function () {
                     console.log(err);
@@ -127,8 +128,8 @@ var UserDao = function () {
             // console.log(results);
         });
     }
-    this.updateEmailByUserId=function (conn, user, callback) {
-        conn.query('update user set email = ? where user_id = ?',[user['email'],user['user_id']], function (err, results, fields) {
+    this.updateEmailByUserId = function (conn, user, callback) {
+        conn.query('update user set email = ? where user_id = ?', [user['email'], user['user_id']], function (err, results, fields) {
             if (err) {
                 conn.rollback(function () {
                     console.log(err);
@@ -139,8 +140,20 @@ var UserDao = function () {
             // console.log(results);
         });
     }
-    this.updatePhoneByUserId=function (conn, user, callback) {
-        conn.query('update user set phone = ? where user_id = ?',[user['phone'],user['user_id']], function (err, results, fields) {
+    this.updatePhoneByUserId = function (conn, user, callback) {
+        conn.query('update user set phone = ? where user_id = ?', [user['phone'], user['user_id']], function (err, results, fields) {
+            if (err) {
+                conn.rollback(function () {
+                    console.log(err);
+                })
+            } else {
+                callback(results);
+            }
+            // console.log(results);
+        });
+    }
+    this.updatePasswordByUserId = function (conn, user, callback) {
+        conn.query('update user set password = ? where user_id = ?', [user['password'], user['user_id']], function (err, results, fields) {
             if (err) {
                 conn.rollback(function () {
                     console.log(err);

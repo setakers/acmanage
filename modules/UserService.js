@@ -27,7 +27,7 @@ var UserService = function () {
                                         callback(true);
                                     })
                                 })
-                            }else{
+                            } else {
                                 conn.commit(function () {
                                     callback(true);
                                 })
@@ -40,13 +40,40 @@ var UserService = function () {
                                     callback(true);
                                 })
                             })
-                        }else{
+                        } else {
                             conn.commit(function () {
                                 callback(true);
                             })
                         }
                     }
                 })
+            })
+        })
+    }
+
+    this.checkPassword = function (user, callback) {
+        ConnPool.doTrans(function (conn) {
+            userDao.getUserByUserId(conn, user['user_id'], function (u) {
+                if (user['password'] === u[0]['password']) {
+                    conn.commit(function () {
+                        callback(true);
+                    })
+                } else {
+                    conn.commit(function () {
+                        callback(false);
+                    })
+                }
+            })
+        })
+    }
+    this.updatePassword = function (user, callback) {
+        ConnPool.doTrans(function (conn) {
+            userDao.updatePasswordByUserId(conn, user, function (res) {
+                // if (res) {
+                callback(true);
+                // } else {
+                //     callback(false);
+                // }
             })
         })
     }
