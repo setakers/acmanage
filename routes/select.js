@@ -45,8 +45,14 @@ router.get('/search/:keyword',(req,resp)=>{
     })
 })
 //GET /api/select/freerooms
-
-
+router.get('/freerooms',(req,resp)=>{
+    courseService.getFreeRooms(function(room_query){
+        let responseJson = JSON.stringify({room: room_query});
+        resp.header('Content-Type', 'application/json')
+            .status(200)
+            .send(responseJson)
+    })
+})
 //POST /api/select/open_course`
 
 

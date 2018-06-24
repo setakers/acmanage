@@ -1,5 +1,23 @@
 
 var CrossDao = function () {
+    this.getFreeRooms = function(conn,callback){
+        conn.query(
+            'select *\n' +
+            'from classroom\n' +
+            'where classroom_id not in(\n' +
+            '\tselect classroom_id\n' +
+            '\tfrom course\n' +
+            '\twhere state = 1\n' +
+            ')',
+            function(error,results,field){
+                if(error){
+                    console.error(error)
+                    conn.rollback(function () {})
+                }
+                else
+                    callback(results)
+            })
+    }
     this.searchCourses = function(conn,keyword,callback){
         conn.query(
             'select course_id,course_name,room_name,credit,introduction,state\n' +
