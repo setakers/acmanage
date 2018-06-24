@@ -57,9 +57,9 @@ router.get('/search/:keyword', (req, resp) => {
     })
 })
 //GET /api/select/freerooms
-router.get('/freerooms', (req, resp) => {
+router.get('/free_rooms', (req, resp) => {
     courseService.getFreeRooms(function (room_query) {
-        let responseJson = JSON.stringify({room: room_query});
+        let responseJson = JSON.stringify({rooms: room_query});
         resp.header('Content-Type', 'application/json')
             .status(200)
             .send(responseJson)
