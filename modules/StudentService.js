@@ -146,7 +146,8 @@ var StudentService = function () {
                                             classroomDao.getClassroomByClassroomId(conn,exam['classroom_id'], function (classroom) {
                                                 tmp1['room_name'] = classroom[0]['room_name'];
                                                 tableData.push(tmp1);
-                                                if (tableData.length === exams.length * attends.length) {
+                                                console.log(tableData.length, exams.length * attends.length)
+                                                if (tableData.length >= exams.length * attends.length) {
                                                     conn.commit(function () {
                                                         callback(tableData);
                                                     })
