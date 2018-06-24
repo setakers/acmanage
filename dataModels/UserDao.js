@@ -1,6 +1,48 @@
 var pool = require('../test/debug');
 
 var UserDao = function () {
+    this.modifyAccount = function (conn, new_info, callback) {
+        conn.query('UPDATE user \n' +
+            'SET user_name = ? ,`password` = ?,`character` = ? ,\n' +
+            'gender = ?, email = ?, phone = ? \n' +
+            'WHERE (`user_id` = ?);\n',
+            [new_info['user_name'],new_info['password'], new_info['character'],
+                new_info['gender'],new_info['email'],new_info['phone'],new_info['user_id'],],
+            function (error, results, fields) {
+                if (error) {
+                    console.error(error);
+                    conn.rollback(function () {
+                    })
+                }
+                callback(results);
+            });
+    }
+    this.addAccount = function (conn, new_account, callback) {
+        conn.query('INSERT INTO `user` (`user_id`, `user_name`, `password`, '
+            +'`character`, `gender`, `email`, `phone`) VALUES (?,?,?,?,?,?,?)',
+            [new_account['user_id'],new_account['user_name'],new_account['password'],
+                new_account['character'],new_account['gender'],new_account['email'],new_account['phone']],
+            function (error, results, fields) {
+            if (error) {
+                console.error(error);
+                conn.rollback(function () {
+                })
+            }
+            callback(results);
+        });
+    }
+    this.listAccount = function(conn,callback){
+        conn.query(
+            'select * from user',
+            function(error,results,field){
+                if(error){
+                    console.error(error)
+                    conn.rollback(function () {})
+                }
+                else
+                    callback(results)
+            })
+    }
     this.searchUser = function(conn,keyword,callback){
         conn.query(
             'select user_id,user_name,`character`,gender,email,phone\n' +
