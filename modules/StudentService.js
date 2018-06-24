@@ -129,36 +129,9 @@ var StudentService = function () {
     this.getExamInfoByStudentId = function (student_id, callback) {
         var tableData = [];
         ConnPool.doTrans(function (conn) {
-            attendDao.getAttendsByStudentId(conn,student_id, function (attends) {
-                attends.forEach(function (attend, idx) {
-                    var tmp = {'course_name': null, 'teacher_name': null, 'room_name': null, 'time': null};
-                    var course_id = attend['course_id'];
-                    teachDao.getTeachByCourseId(conn,course_id, function (teach) {
-                        asTeacherDao.getAsTeacherByTeacherId(conn,teach[0]['teacher_id'], function (as_teacher) {
-                            userDao.getUserByUserId(conn,as_teacher[0]['user_id'], function (user) {
-                                tmp['teacher_name'] = user[0]['user_name'];
-                                courseDao.getCourseByCourseId(conn,course_id, function (course) {
-                                    tmp['course_name'] = course[0]['course_name'];
-                                    examDao.getExamsByCourseId(conn,course[0]['course_id'], function (exams) {
-                                        exams.forEach(function (exam, idx1) {
-                                            var tmp1 = clone(tmp);
-                                            tmp1['time'] = exam['time'].toLocaleString();
-                                            classroomDao.getClassroomByClassroomId(conn,exam['classroom_id'], function (classroom) {
-                                                tmp1['room_name'] = classroom[0]['room_name'];
-                                                tableData.push(tmp1);
-                                                console.log(tableData.length, exams.length * attends.length)
-                                                if (tableData.length >= exams.length * attends.length) {
-                                                    conn.commit(function () {
-                                                        callback(tableData);
-                                                    })
-                                                }
-                                            })
-                                        })
-                                    })
-                                })
-                            })
-                        })
-                    })
+            crossDao.getExamInfoByStudentId(conn,student_id,function(exams){
+                conn.commit(function(){
+                    callback(exams)
                 })
             })
         })

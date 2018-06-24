@@ -1,5 +1,31 @@
 
 var CrossDao = function () {
+    this.getExamInfoByStudentId = function(conn,student_id,callback){
+        let sqlquery =
+            'select course_name,user_name as teacher_name,room_name,time\n' +
+            'from (\n' +
+            '\tselect course_id\n' +
+            '\tfrom attend\n' +
+            '\twhere student_id = '+student_id+'\n' +
+            ')as ATT\n' +
+            'natural left join(\n' +
+            '\tselect course_id,course_name\n' +
+            '\tfrom course\n' +
+            ')as CRS\n' +
+            'natural left join as_teacher\n' +
+            'natural left join user\n' +
+            'natural left join exam\n' +
+            'natural left join classroom'
+        conn.query(sqlquery,
+            function(error,results,field){
+                if(error){
+                    console.error(error)
+                    conn.rollback(function () {})
+                }
+                else
+                    callback(results)
+            })
+    }
     this.getAllScoreQueries = function(conn,callback){
         let sqlquery =
             'select *\n' +
